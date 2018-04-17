@@ -2,7 +2,7 @@
 #define HNETSET_H
 
 #include <QWidget>
-#include "sysconfigapi.h"
+#include "hconfigapi.h"
 
 namespace Ui {
 class NetSet;

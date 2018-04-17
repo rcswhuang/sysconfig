@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QTabWidget>
-#include "hsysconfig.h"
 #include "hnormalset.h"
 #include "hnetset.h"
 #include "hsyspathset.h"
@@ -12,7 +11,6 @@
 #include "hformatset.h"
 #include "hotherset.h"
 
-#include "hxml.h"
 
 /*
 SETTING* findSettingById(ushort wSettingId)
@@ -33,6 +31,12 @@ public:
     ~HSysConfigDlg();
 public:
     void initTab();
+    void apply();
+
+public slots:
+    void ok_clicked();
+    void cancle_clicked();
+    void apply_clicked();
 private:
     Ui::SysConfig *ui;
 public:

@@ -11,28 +11,30 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = sysconfig
 TEMPLATE = app
 
+INCLUDEPATH += \
+              ../include \
 
 SOURCES += main.cpp\
-    hxml.cpp \
+    #hxml.cpp \
     hnetset.cpp \
     hfunset.cpp \
     hnormalset.cpp \
     hformatset.cpp \
     hsysconfigdlg.cpp \
-    hsysconfig.cpp \
+    #hsysconfig.cpp \
     hticketnoset.cpp \
     hotherset.cpp \
     hsyspathset.cpp
 
 HEADERS  += \
-    hxml.h \
+    #hxml.h \
     hnetset.h \
     hfunset.h \
     hnormalset.h \
     hformatset.h \
-    sysconfigapi.h \
+    #sysconfigapi.h \
     hsysconfigdlg.h \
-    hsysconfig.h \
+    #hsysconfig.h \
     hticketnoset.h \
     hotherset.h \
     hsyspathset.h
@@ -45,5 +47,25 @@ FORMS    += sysconfig.ui \
     otherset.ui \
     ticketnoset.ui \
     syspathset.ui
+
+LIBS += -L../lib
+
+win32
+{
+    LIBS += \
+           ../lib/sysconfigapi.lib
+    UI_DIR = temp/ui
+    MOC_DIR = temp/moc
+    OBJECTS_DIR	= temp/obj
+}
+
+unix
+{
+    LIBS += -lsysconfigapi
+    UI_DIR=	.ui
+    MOC_DIR= .moc
+    OBJECTS_DIR= .obj
+}
+
 
 QT += xml

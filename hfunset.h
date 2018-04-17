@@ -2,7 +2,7 @@
 #define FUNSET_H
 
 #include <QWidget>
-#include "sysconfigapi.h"
+#include "hconfigapi.h"
 
 namespace Ui {
 class FunSet;
@@ -25,7 +25,6 @@ public:
 
 public:
     HSysSetList* pSysSetList;
-
 private:
     Ui::FunSet *ui;
 };
