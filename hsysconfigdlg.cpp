@@ -1,21 +1,26 @@
-﻿#include "hsysconfigdlg.h"
+﻿#if defined(_MSC_VER) &&(_MSC_VER >=1600)
+#pragma execution_character_set("utf-8")
+#endif
+#include "hsysconfigdlg.h"
 #include "ui_sysconfig.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTabBar>
 #include <QMessageBox>
 #include "hconfigapi.h"
-#if defined(_MSC_VER) &&(_MSC_VER >=1600)
-#pragma execution_character_set("utf-8")
-#endif
 
+/*
+ * 获取系统配置文件目录:../WFS-9800/wfconfig.xml
+ * 1.获取系统变量 wfsystem_dir=../WFS-9800
+ * 2.如果获取不到系统变量，只能获取文件当前目录的父目录，当前目录应该是../WFS-9800/bin
+*/
 HSysConfigDlg::HSysConfigDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SysConfig)
 {
     ui->setupUi(this);
 
-    initSysConfig("../data/wfconfig.xml");
+    initSysConfig();
 
     initTab();
 }
@@ -61,24 +66,31 @@ void HSysConfigDlg::initTab()
     pNetSetTab = new HNetSetTab(this);
     pConfigTabWidget->addTab(pNetSetTab,QStringLiteral("网络设置"));
     getSysConfigByID(SYS_SET_NET,pNetSetTab->pSysSetList);
+    pNetSetTab->readData();
     pNormalSetTab = new HNormalSetTab(this);
     pConfigTabWidget->addTab(pNormalSetTab,QStringLiteral("一般设置"));
     getSysConfigByID(SYS_SET_NORMAL,pNormalSetTab->pSysSetList);
+    pNormalSetTab->readData();
     pSysPathTab = new HSysPathTab(this);
     pConfigTabWidget->addTab(pSysPathTab,QStringLiteral("路径设置"));
     getSysConfigByID(SYS_SET_PATH,pSysPathTab->pSysSetList);
+    pSysPathTab->readData();
     pFunSetTab = new HFunSetTab(this);
     pConfigTabWidget->addTab(pFunSetTab,QStringLiteral("功能设置"));
     getSysConfigByID(SYS_SET_FUN,pFunSetTab->pSysSetList);
+    pFunSetTab->readData();
     pWorkNoteSetTab = new HWorkNoteSetTab(this);
     pConfigTabWidget->addTab(pWorkNoteSetTab,QStringLiteral("操作票设置"));
     getSysConfigByID(SYS_SET_TICKET,pWorkNoteSetTab->pSysSetList);
+    pWorkNoteSetTab->readData();
     pFormatSetTab = new HFormatSetTab(this);
     pConfigTabWidget->addTab(pFormatSetTab,QStringLiteral("操作票号设置"));
     getSysConfigByID(SYS_SET_FORMAT,pFormatSetTab->pSysSetList);
+    pFormatSetTab->readData();
     pOtherSetTab = new HOtherSetTab(this);
     pConfigTabWidget->addTab(pOtherSetTab,QStringLiteral("其他设置"));
     getSysConfigByID(SYS_SET_OTHER,pOtherSetTab->pSysSetList);
+    pOtherSetTab->readData();
     QVBoxLayout* mainLayout = new QVBoxLayout;
     mainLayout->addWidget(pConfigTabWidget);
 
@@ -93,6 +105,13 @@ void HSysConfigDlg::initTab()
 
 void HSysConfigDlg::apply()
 {
+    pNetSetTab->writeData();
+    pNormalSetTab->writeData();
+    pSysPathTab->writeData();
+    pFunSetTab->writeData();
+    pWorkNoteSetTab->writeData();
+    pFormatSetTab->writeData();
+    pOtherSetTab->writeData();
     applySysConfig();
 }
 

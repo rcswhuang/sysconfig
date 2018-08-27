@@ -1,4 +1,4 @@
-#include "hformatset.h"
+﻿#include "hformatset.h"
 #include "ui_formatset.h"
 
 HFormatSetTab::HFormatSetTab(QWidget *parent) :
@@ -28,7 +28,7 @@ void HFormatSetTab::initTab()
     ui->tailEdit->setText("下接$号操作票");
     ui->tailEdit->setEnabled(false);
 
-    connect(ui->addHeadTailCheck,SIGNAL(clicked()),this,SLOT(addHeadTail()));
+    connect(ui->addHeadTailCheck,SIGNAL(clicked()),this,SLOT(addEndText()));
 
     ui->prefixCheck->setChecked(false);
     ui->prefixEdit->setEnabled(false);
@@ -56,26 +56,35 @@ void HFormatSetTab::writeData()
 {
     clear();
 
-    SYSSET *oneTicketNum = new SYSSET;
-    if(oneTicketNum)
+    if(ui->oneTicketNumRadio->isChecked())
     {
-        oneTicketNum->id = TICKET_ONE_TICKET_NUM;
-        oneTicketNum->var = QVariant(ui->oneTicketNumRadio->isChecked());
-        pSysSetList->append(oneTicketNum);
+        SYSSET *oneTicketNum = new SYSSET;
+        if(oneTicketNum)
+        {
+            oneTicketNum->id = TICKET_ONE_TICKET_NUM;
+            oneTicketNum->strObjName = ui->oneTicketNumRadio->text();
+            oneTicketNum->var = QVariant(ui->oneTicketNumRadio->isChecked());
+            pSysSetList->append(oneTicketNum);
+        }
     }
 
-    SYSSET *oneTicketPageNum = new SYSSET;
-    if(oneTicketPageNum)
+    if(ui->oneTicketPageNumRadio->isChecked())
     {
-        oneTicketPageNum->id = TICKET_ONE_TICKET_PAGE_NUM;
-        oneTicketPageNum->var = QVariant(ui->oneTicketPageNumRadio->isChecked());
-        pSysSetList->append(oneTicketPageNum);
+        SYSSET *oneTicketPageNum = new SYSSET;
+        if(oneTicketPageNum)
+        {
+            oneTicketPageNum->id = TICKET_ONE_TICKET_PAGE_NUM;
+            oneTicketPageNum->strObjName = ui->oneTicketPageNumRadio->text();
+            oneTicketPageNum->var = QVariant(ui->oneTicketPageNumRadio->isChecked());
+            pSysSetList->append(oneTicketPageNum);
+        }
     }
 
     SYSSET *addHeadTail = new SYSSET;
     if(addHeadTail)
     {
         addHeadTail->id = TICKET_ADD_HEAD_TAIL;
+        addHeadTail->strObjName = "添加页头页尾";
         addHeadTail->var = QVariant(ui->addHeadTailCheck->isChecked());
         pSysSetList->append(addHeadTail);
     }
@@ -84,6 +93,7 @@ void HFormatSetTab::writeData()
     if(showHeadTail)
     {
         showHeadTail->id = TICKET_SHOW_HEAD_TAIL;
+        showHeadTail->strObjName = "显示页头页尾";
         showHeadTail->var = QVariant(ui->showHeadTailCheck->isChecked());
         pSysSetList->append(showHeadTail);
     }
@@ -92,6 +102,7 @@ void HFormatSetTab::writeData()
     if(headContent)
     {
         headContent->id = TICKET_HEAD_CONTENT;
+        headContent->strObjName = "页头";
         headContent->var = QVariant(ui->headEdit->text());
         pSysSetList->append(headContent);
     }
@@ -100,6 +111,7 @@ void HFormatSetTab::writeData()
     if(tailContent)
     {
         tailContent->id = TICKET_TAIL_CONTENT;
+        tailContent->strObjName = "页尾";
         tailContent->var = QVariant(ui->tailEdit->text());
         pSysSetList->append(tailContent);
     }
@@ -108,6 +120,7 @@ void HFormatSetTab::writeData()
     if(prefix)
     {
         prefix->id = TICKET_PREFIX_SET;
+        prefix->strObjName = "是否前缀";
         prefix->var = QVariant(ui->prefixCheck->isChecked());
         pSysSetList->append(prefix);
     }
@@ -116,6 +129,7 @@ void HFormatSetTab::writeData()
     if(suffix)
     {
         suffix->id = TICKET_SUFFIX_SET;
+        suffix->strObjName = "是否后缀";
         suffix->var = QVariant(ui->suffixCheck->isChecked());
         pSysSetList->append(suffix);
     }
@@ -124,6 +138,7 @@ void HFormatSetTab::writeData()
     if(fixlength)
     {
         fixlength->id = TICKET_FIX_LENGTH_SET;
+        fixlength->strObjName = "是否固定长度";
         fixlength->var = QVariant(ui->fixlenthCheck->isChecked());
         pSysSetList->append(fixlength);
     }
@@ -132,6 +147,7 @@ void HFormatSetTab::writeData()
     if(prefixContent)
     {
         prefixContent->id = TICKET_PREFIX_CONTENT;
+        prefixContent->strObjName = "前缀";
         prefixContent->var = QVariant(ui->prefixEdit->text());
         pSysSetList->append(prefixContent);
     }
@@ -140,6 +156,7 @@ void HFormatSetTab::writeData()
     if(suffixContent)
     {
         suffixContent->id = TICKET_SUFFIX_CONTENT;
+        suffixContent->strObjName = "后缀";
         suffixContent->var = QVariant(ui->suffixEdit->text());
         pSysSetList->append(suffixContent);
     }
@@ -148,6 +165,7 @@ void HFormatSetTab::writeData()
     if(fixlengthContent)
     {
         fixlengthContent->id = TICKET_FIX_LENGTH_CONTENT;
+        fixlengthContent->strObjName = "固定长度";
         fixlengthContent->var = QVariant(ui->fixlengthEdit->text());
         pSysSetList->append(fixlengthContent);
     }
@@ -156,6 +174,7 @@ void HFormatSetTab::writeData()
     if(modifyPreTicketNum)
     {
         modifyPreTicketNum->id = TICKET_MODIFY_PRETICKET_SET;
+        modifyPreTicketNum->strObjName = "修改预开票";
         modifyPreTicketNum->var = QVariant(ui->modifyPreTicketNumCheck->isChecked());
         pSysSetList->append(modifyPreTicketNum);
     }
@@ -164,6 +183,7 @@ void HFormatSetTab::writeData()
     if(nextTicketNum)
     {
         nextTicketNum->id = TICKET_MODIFY_NEXT_NUM;
+        nextTicketNum->strObjName = "下一预开票号";
         nextTicketNum->var = QVariant(ui->nextTicketNumEdit->text());
         pSysSetList->append(nextTicketNum);
     }
@@ -172,6 +192,7 @@ void HFormatSetTab::writeData()
     if(modifyTicketNum)
     {
         modifyTicketNum->id = TICKET_MODIFY_TICKET_SET;
+        modifyTicketNum->strObjName = "修改临时模板票号";
         modifyTicketNum->var = QVariant(ui->modifyTicketNumCheck->text());
         pSysSetList->append(modifyTicketNum);
     }
@@ -180,6 +201,7 @@ void HFormatSetTab::writeData()
     if(modifySerialNum)
     {
         modifySerialNum->id = TICKET_MODIFY_SERIAL_SET;
+        modifySerialNum->strObjName = "修改流水号";
         modifySerialNum->var = QVariant(ui->modifySerialNumCheck->isChecked());
         pSysSetList->append(modifySerialNum);
     }
@@ -188,6 +210,7 @@ void HFormatSetTab::writeData()
     if(beginSerialNum)
     {
         beginSerialNum->id = TICKET_BEGIN_SERIAL_NUM;
+        beginSerialNum->strObjName = "流水号始于";
         beginSerialNum->var = QVariant(ui->beginSerialNumEdit->text());
         pSysSetList->append(beginSerialNum);
     }
@@ -206,31 +229,19 @@ void HFormatSetTab::readData()
         {
             if(sysSet->id == TICKET_ONE_TICKET_NUM)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->oneTicketNumRadio->setChecked(bChecked);
+                ui->oneTicketNumRadio->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_ONE_TICKET_PAGE_NUM)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->oneTicketPageNumRadio->setChecked(bChecked);
+                ui->oneTicketPageNumRadio->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_ADD_HEAD_TAIL)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->addHeadTailCheck->setChecked(bChecked);
+                ui->addHeadTailCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_SHOW_HEAD_TAIL)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->showHeadTailCheck->setChecked(bChecked);
+                ui->showHeadTailCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_HEAD_CONTENT)
             {
@@ -242,10 +253,7 @@ void HFormatSetTab::readData()
             }
             else if(sysSet->id == TICKET_PREFIX_SET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->prefixCheck->setChecked(bChecked);
+                ui->prefixCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_PREFIX_CONTENT)
             {
@@ -253,10 +261,7 @@ void HFormatSetTab::readData()
             }
             else if(sysSet->id == TICKET_SUFFIX_SET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->suffixCheck->setChecked(bChecked);
+                ui->suffixCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_SUFFIX_CONTENT)
             {
@@ -264,10 +269,7 @@ void HFormatSetTab::readData()
             }
             else if(sysSet->id == TICKET_FIX_LENGTH_SET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->fixlenthCheck->setChecked(bChecked);
+                ui->fixlenthCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_FIX_LENGTH_CONTENT)
             {
@@ -275,10 +277,7 @@ void HFormatSetTab::readData()
             }
             else if(sysSet->id == TICKET_MODIFY_PRETICKET_SET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->modifyPreTicketNumCheck->setChecked(bChecked);
+                ui->modifyPreTicketNumCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_MODIFY_NEXT_NUM)
             {
@@ -286,17 +285,11 @@ void HFormatSetTab::readData()
             }
             else if(sysSet->id == TICKET_MODIFY_TICKET_SET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->modifyTicketNumCheck->setChecked(bChecked);
+                ui->modifyTicketNumCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_MODIFY_SERIAL_SET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->modifySerialNumCheck->setChecked(bChecked);
+                ui->modifySerialNumCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == TICKET_BEGIN_SERIAL_NUM)
             {
@@ -304,6 +297,21 @@ void HFormatSetTab::readData()
             }
         }
     }
+
+    ui->showHeadTailCheck->setEnabled(ui->addHeadTailCheck->isChecked());
+    bool bCheck = ui->showHeadTailCheck->isChecked() && ui->addHeadTailCheck->isChecked();
+    if(bCheck)
+    {
+        ui->headEdit->setEnabled(bCheck);
+        ui->tailEdit->setEnabled(bCheck);
+    }
+    ui->prefixEdit->setEnabled(ui->prefixCheck->isChecked());
+    ui->suffixEdit->setEnabled(ui->suffixCheck->isChecked());
+    ui->fixlengthEdit->setEnabled(ui->fixlenthCheck->isChecked());
+    ui->nextTicketNumEdit->setEnabled(ui->modifyPreTicketNumCheck->isChecked());
+    ui->beginSerialNumEdit->setEnabled(ui->modifySerialNumCheck->isChecked());
+
+
 }
 
 void HFormatSetTab::clear()

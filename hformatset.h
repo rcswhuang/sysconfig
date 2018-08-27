@@ -21,6 +21,7 @@ public:
     void readData();
     void clear();
 
+
 public slots:
     void addHeadTail();
     //void showHeadTail();

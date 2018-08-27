@@ -10,6 +10,7 @@ HWorkNoteSetTab::HWorkNoteSetTab(QWidget *parent) :
     initTab();
 }
 
+
 HWorkNoteSetTab::~HWorkNoteSetTab()
 {
     delete ui;
@@ -42,6 +43,15 @@ void HWorkNoteSetTab::initTab()
     ui->fujianModelCheck->setChecked(false);
     ui->promptUndownCheck->setChecked(false);
     ui->printForbidWMCheck->setChecked(false);
+
+    ui->ticketNum->setText("12");
+    ui->ticketWindows->setText("1");
+
+    ui->addEndCheck->setChecked(false);
+    ui->endEdit->setEnabled(false);
+    ui->alignCenterCheck->setChecked(false);
+    ui->pageSpecialCheck->setChecked(false);
+    connect(ui->addEndCheck,SIGNAL(clicked()),this,SLOT(addEndText1()));
 }
 
 
@@ -55,6 +65,7 @@ void HWorkNoteSetTab::writeData()
     if(lockYXCheck)
     {
         lockYXCheck->id = WF_LOCKYX_CHECK;
+        lockYXCheck->strObjName = "五防机闭锁全部遥信";
         lockYXCheck->var = QVariant(ui->lockYXCheck->isChecked());
         pSysSetList->append(lockYXCheck);
     }
@@ -63,6 +74,7 @@ void HWorkNoteSetTab::writeData()
     if(autoMatchCheck)
     {
         autoMatchCheck->id = WF_AUTOMATCH_CHECK;
+        autoMatchCheck->strObjName = "自动匹配检查项";
         autoMatchCheck->var = QVariant(ui->autoMatchCheck->isChecked());
         pSysSetList->append(autoMatchCheck);
     }
@@ -71,6 +83,7 @@ void HWorkNoteSetTab::writeData()
     if(allowWfYkCheck)
     {
         allowWfYkCheck->id = WF_ALLWF_YK_CHECK;
+        allowWfYkCheck->strObjName = "允许五防机遥控";
         allowWfYkCheck->var = QVariant(ui->allowWfYkCheck->isChecked());
         pSysSetList->append(allowWfYkCheck);
     }
@@ -79,6 +92,7 @@ void HWorkNoteSetTab::writeData()
     if(promptCheck)
     {
         promptCheck->id = WF_PROMPT_CHECK;
+        promptCheck->strObjName = "五防机执行提示操作";
         promptCheck->var = QVariant(ui->promptCheck->isChecked());
         pSysSetList->append(promptCheck);
     }
@@ -87,6 +101,7 @@ void HWorkNoteSetTab::writeData()
     if(mnpConfirmCheck)
     {
         mnpConfirmCheck->id = WF_MNP_CONFIRM_CHECK;
+        mnpConfirmCheck->strObjName = "遥控前要求模拟屏确认";
         mnpConfirmCheck->var = QVariant(ui->mnpConfirmCheck->isChecked());
         pSysSetList->append(mnpConfirmCheck);
     }
@@ -95,6 +110,7 @@ void HWorkNoteSetTab::writeData()
     if(forbidMBEditorCheck)
     {
         forbidMBEditorCheck->id = WF_FORBID_MB_EDITOR_CHECK;
+        forbidMBEditorCheck->strObjName = "禁止模板票编辑";
         forbidMBEditorCheck->var = QVariant(ui->forbidMBEditorCheck->isChecked());
         pSysSetList->append(forbidMBEditorCheck);
     }
@@ -103,6 +119,7 @@ void HWorkNoteSetTab::writeData()
     if(execTicketCheck)
     {
         execTicketCheck->id = WF_EXEC_TICKET_CHECK;
+        execTicketCheck->strObjName = "转为执行票直接执行";
         execTicketCheck->var = QVariant(ui->execTicketCheck->isChecked());
         pSysSetList->append(execTicketCheck);
     }
@@ -111,6 +128,7 @@ void HWorkNoteSetTab::writeData()
     if(refreshTicketCheck)
     {
         refreshTicketCheck->id = WF_REFRESH_TICKET_CHECK;
+        refreshTicketCheck->strObjName = "系统启动时刷新操作票";
         refreshTicketCheck->var = QVariant(ui->refreshTicketCheck->isChecked());
         pSysSetList->append(refreshTicketCheck);
     }
@@ -119,6 +137,7 @@ void HWorkNoteSetTab::writeData()
     if(directOperaCheck)
     {
         directOperaCheck->id = WF_DIRECT_OPERA_CHECK;
+        directOperaCheck->strObjName = "预演结束后直接执行";
         directOperaCheck->var = QVariant(ui->directOperaCheck->isChecked());
         pSysSetList->append(directOperaCheck);
     }
@@ -127,6 +146,7 @@ void HWorkNoteSetTab::writeData()
     if(promptNetCheck)
     {
         promptNetCheck->id = WF_PROMPT_NET_CHECK;
+        promptNetCheck->strObjName = "预演时需提示网络状态";
         promptNetCheck->var = QVariant(ui->promptNetCheck->isChecked());
         pSysSetList->append(promptNetCheck);
     }
@@ -135,6 +155,7 @@ void HWorkNoteSetTab::writeData()
     if(forbidPreCheck)
     {
         forbidPreCheck->id = WF_FORBID_PRE_CHECK;
+        forbidPreCheck->strObjName = "禁止模板票预演";
         forbidPreCheck->var = QVariant(ui->forbidPreCheck->isChecked());
         pSysSetList->append(forbidPreCheck);
     }
@@ -143,6 +164,7 @@ void HWorkNoteSetTab::writeData()
     if(judgeMulCheck)
     {
         judgeMulCheck->id = WF_JUDGE_MUL_CHECK;
+        judgeMulCheck->strObjName = "预演时判断多任务冲突";
         judgeMulCheck->var = QVariant(ui->judgeMulCheck->isChecked());
         pSysSetList->append(judgeMulCheck);
     }
@@ -151,6 +173,7 @@ void HWorkNoteSetTab::writeData()
     if(lockAllCheck)
     {
         lockAllCheck->id = WF_LOCK_ALL_CHECK;
+        lockAllCheck->strObjName = "系统启动时闭锁所有间隔";
         lockAllCheck->var = QVariant(ui->lockAllCheck->isChecked());
         pSysSetList->append(lockAllCheck);
     }
@@ -159,6 +182,7 @@ void HWorkNoteSetTab::writeData()
     if(clearTicketCheck)
     {
         clearTicketCheck->id = WF_CLEAR_TICKET_CHECK;
+        clearTicketCheck->strObjName = "执行取消/结束后钥匙清零";
         clearTicketCheck->var = QVariant(ui->clearTicketCheck->isChecked());
         pSysSetList->append(clearTicketCheck);
     }
@@ -167,6 +191,7 @@ void HWorkNoteSetTab::writeData()
     if(sectionOperCheck)
     {
         sectionOperCheck->id = WF_SECTION_OPER_CHECK;
+        sectionOperCheck->strObjName = "直接装载断面执行";
         sectionOperCheck->var = QVariant(ui->sectionOperCheck->isChecked());
         pSysSetList->append(sectionOperCheck);
     }
@@ -175,6 +200,7 @@ void HWorkNoteSetTab::writeData()
     if(forbidModifyCheck)
     {
         forbidModifyCheck->id = WF_FORBID_MODIFY_CHECK;
+        forbidModifyCheck->strObjName = "禁止预演时拉合操作修改";
         forbidModifyCheck->var = QVariant(ui->forbidModifyCheck->isChecked());
         pSysSetList->append(forbidModifyCheck);
     }
@@ -183,6 +209,7 @@ void HWorkNoteSetTab::writeData()
     if(saveForbidMBCheck)
     {
         saveForbidMBCheck->id = WF_SAVE_FORBIDMB_CHECK;
+        saveForbidMBCheck->strObjName = "保存时屏蔽模板票";
         saveForbidMBCheck->var = QVariant(ui->saveForbidMBCheck->isChecked());
         pSysSetList->append(saveForbidMBCheck);
     }
@@ -191,6 +218,7 @@ void HWorkNoteSetTab::writeData()
     if(clickPromptCheck)
     {
         clickPromptCheck->id = WF_CLICK_PROMPT_CHECK;
+        clickPromptCheck->strObjName = "启动画面点击提示操作";
         clickPromptCheck->var = QVariant(ui->clickPromptCheck->isChecked());
         pSysSetList->append(clickPromptCheck);
     }
@@ -199,6 +227,7 @@ void HWorkNoteSetTab::writeData()
     if(fromMnpCheck)
     {
         fromMnpCheck->id = WF_FROM_MNP_CHECK;
+        fromMnpCheck->strObjName = "从模拟屏开票";
         fromMnpCheck->var = QVariant(ui->fromMnpCheck->isChecked());
         pSysSetList->append(fromMnpCheck);
     }
@@ -207,6 +236,7 @@ void HWorkNoteSetTab::writeData()
     if(saveStateCheck)
     {
         saveStateCheck->id = WF_SAVE_STATE_CHECK;
+        saveStateCheck->strObjName = "开票后保存状态继续开票";
         saveStateCheck->var = QVariant(ui->saveStateCheck->isChecked());
         pSysSetList->append(saveStateCheck);
     }
@@ -215,6 +245,7 @@ void HWorkNoteSetTab::writeData()
     if(fujianModelCheck)
     {
         fujianModelCheck->id = WF_FUJIAN_MODEL_CHECK;
+        fujianModelCheck->strObjName = "福建模式";
         fujianModelCheck->var = QVariant(ui->fujianModelCheck->isChecked());
         pSysSetList->append(fujianModelCheck);
     }
@@ -223,6 +254,7 @@ void HWorkNoteSetTab::writeData()
     if(promptUndownCheck)
     {
         promptUndownCheck->id = WF_PROMPT_UNDOWN_CHECK;
+        promptUndownCheck->strObjName = "提示操作不下传";
         promptUndownCheck->var = QVariant(ui->promptUndownCheck->isChecked());
         pSysSetList->append(promptUndownCheck);
     }
@@ -231,8 +263,59 @@ void HWorkNoteSetTab::writeData()
     if(printForbidWMCheck)
     {
         printForbidWMCheck->id = WF_PRINT_FORBID_WM_CHECK;
+        printForbidWMCheck->strObjName = "打印操作票屏蔽网门";
         printForbidWMCheck->var = QVariant(ui->printForbidWMCheck->isChecked());
         pSysSetList->append(printForbidWMCheck);
+    }
+
+    SYSSET *ticketNum = new SYSSET;
+    if(ticketNum)
+    {
+        ticketNum->id = WF_TICKET_NUM;
+        ticketNum->strObjName = "每操作票行数";
+        ticketNum->var = QVariant(ui->ticketNum->text());
+        pSysSetList->append(ticketNum);
+    }
+
+    SYSSET *ticketWindows = new SYSSET;
+    if(ticketWindows)
+    {
+        ticketWindows->id = WF_TICKET_WINDOWS;
+        ticketWindows->strObjName = "操作票执行窗口数";
+        ticketWindows->var = QVariant(ui->ticketWindows->text());
+        pSysSetList->append(ticketWindows);
+    }
+
+    SYSSET* addEndText = new SYSSET;
+    if(addEndText)
+    {
+        addEndText->id = WF_ADD_END_TEXT;
+        addEndText->strObjName ="增加结束语";
+        addEndText->var = QVariant(ui->addEndCheck->isChecked());
+    }
+
+    SYSSET* endText = new SYSSET;
+    if(endText)
+    {
+        endText->id = WF_END_TEXT;
+        endText->strObjName ="结束语";
+        endText->var = QVariant(ui->endEdit->text());
+    }
+
+    SYSSET* alignCenter = new SYSSET;
+    if(alignCenter)
+    {
+        alignCenter->id = WF_ALIGN_CENTER;
+        alignCenter->strObjName ="居中显示";
+        alignCenter->var = QVariant(ui->alignCenterCheck->isChecked());
+    }
+
+    SYSSET* pageSpecial = new SYSSET;
+    if(pageSpecial)
+    {
+        pageSpecial->id = WF_PAGE_SPECIAL;
+        pageSpecial->strObjName ="整页时特殊处理";
+        pageSpecial->var = QVariant(ui->pageSpecialCheck->isChecked());
     }
 }
 
@@ -247,167 +330,126 @@ void HWorkNoteSetTab::readData()
         {
             if(sysSet->id == WF_LOCKYX_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->lockYXCheck->setChecked(bChecked);
+                ui->lockYXCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_AUTOMATCH_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->autoMatchCheck->setChecked(bChecked);
+                ui->autoMatchCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_ALLWF_YK_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->allowWfYkCheck->setChecked(bChecked);
+                ui->allowWfYkCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_PROMPT_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->promptCheck->setChecked(bChecked);
+                ui->promptCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_MNP_CONFIRM_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->mnpConfirmCheck->setChecked(bChecked);
+                ui->mnpConfirmCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_FORBID_MB_EDITOR_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->forbidMBEditorCheck->setChecked(bChecked);
+                ui->forbidMBEditorCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_EXEC_TICKET_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->execTicketCheck->setChecked(bChecked);
+                ui->execTicketCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_REFRESH_TICKET_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->refreshTicketCheck->setChecked(bChecked);
+                ui->refreshTicketCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_DIRECT_OPERA_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->directOperaCheck->setChecked(bChecked);
+                ui->directOperaCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_PROMPT_NET_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->promptNetCheck->setChecked(bChecked);
+                ui->promptNetCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_FORBID_PRE_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->forbidPreCheck->setChecked(bChecked);
+                ui->forbidPreCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_JUDGE_MUL_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->judgeMulCheck->setChecked(bChecked);
+                ui->judgeMulCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_LOCK_ALL_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->lockAllCheck->setChecked(bChecked);
+                ui->lockAllCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_CLEAR_TICKET_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->clearTicketCheck->setChecked(bChecked);
+                ui->clearTicketCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_SECTION_OPER_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->sectionOperCheck->setChecked(bChecked);
+                ui->sectionOperCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_FORBID_MODIFY_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->forbidModifyCheck->setChecked(bChecked);
+                ui->forbidModifyCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_SAVE_FORBIDMB_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->saveForbidMBCheck->setChecked(bChecked);
+                ui->saveForbidMBCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_CLICK_PROMPT_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->clickPromptCheck->setChecked(bChecked);
+                ui->clickPromptCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_FROM_MNP_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->fromMnpCheck->setChecked(bChecked);
+                ui->fromMnpCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_SAVE_STATE_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->saveStateCheck->setChecked(bChecked);
+                ui->saveStateCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_FUJIAN_MODEL_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->fujianModelCheck->setChecked(bChecked);
+                ui->fujianModelCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_PROMPT_UNDOWN_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->promptUndownCheck->setChecked(bChecked);
+                ui->promptUndownCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == WF_PRINT_FORBID_WM_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->printForbidWMCheck->setChecked(bChecked);
+                ui->printForbidWMCheck->setChecked(sysSet->var.toBool());
+            }
+            else if(sysSet->id == WF_TICKET_NUM)
+            {
+                ui->ticketNum->setText(sysSet->var.toString());
+            }
+            else if(sysSet->id == WF_TICKET_WINDOWS)
+            {
+                ui->ticketWindows->setText(sysSet->var.toString());
+            }
+            else if(sysSet->id == WF_ADD_END_TEXT)
+            {
+                ui->addEndCheck->setChecked(sysSet->var.toBool());
+            }
+            else if(sysSet->id == WF_END_TEXT)
+            {
+                ui->endEdit->setText(sysSet->var.toString());
+            }
+            else if(sysSet->id == WF_ALIGN_CENTER)
+            {
+                ui->alignCenterCheck->setChecked(sysSet->var.toBool());
+            }
+            else if(sysSet->id == WF_PAGE_SPECIAL)
+            {
+                ui->pageSpecialCheck->setChecked(sysSet->var.toBool());
             }
         }
     }
+
+    ui->endEdit->setEnabled(ui->addEndCheck->isChecked());
+    ui->alignCenterCheck->setEnabled(ui->addEndCheck->isChecked());
+    ui->pageSpecialCheck->setEnabled(ui->addEndCheck->isChecked());
 }
 
 void HWorkNoteSetTab::clear()
@@ -416,4 +458,21 @@ void HWorkNoteSetTab::clear()
     while(!pSysSetList->isEmpty())
         delete (SYSSET*)pSysSetList->takeFirst();
     pSysSetList->clear();
+}
+
+void HWorkNoteSetTab::addEndText1()
+{
+    bool bCheck = ui->addEndCheck->isChecked();
+    if(bCheck)
+    {
+        ui->endEdit->setEnabled(true);
+        ui->alignCenterCheck->setEnabled(true);
+        ui->pageSpecialCheck->setEnabled(true);
+    }
+    else
+    {
+        ui->endEdit->setEnabled(false);
+        ui->alignCenterCheck->setEnabled(false);
+        ui->pageSpecialCheck->setEnabled(false);
+    }
 }

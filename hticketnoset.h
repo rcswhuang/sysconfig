@@ -19,6 +19,9 @@ public:
     void readData();
     void clear();
 
+public slots:
+    void addEndText1();
+
 public:
     HSysSetList* pSysSetList;
 private:

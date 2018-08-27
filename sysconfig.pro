@@ -5,12 +5,11 @@
 #-------------------------------------------------
 
 QT       += core gui
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = sysconfig
 TEMPLATE = app
-
+DESTDIR = ../bin_win
 INCLUDEPATH += \
               ../include \
 
@@ -48,24 +47,23 @@ FORMS    += sysconfig.ui \
     ticketnoset.ui \
     syspathset.ui
 
-LIBS += -L../lib
+#LIBS += -L../lib
+unix{
+    LIBS += -L ../lib -lH5ConfigHelp
+    #UI_DIR=	.ui
+    #MOC_DIR= .moc
+    #OBJECTS_DIR= .obj
+}
 
-win32
-{
+
+win32{
     LIBS += \
-           ../lib/sysconfigapi.lib
+           ../lib/H5ConfigHelp.lib
     UI_DIR = temp/ui
     MOC_DIR = temp/moc
     OBJECTS_DIR	= temp/obj
 }
 
-unix
-{
-    LIBS += -lsysconfigapi
-    UI_DIR=	.ui
-    MOC_DIR= .moc
-    OBJECTS_DIR= .obj
-}
 
 
 QT += xml

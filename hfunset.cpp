@@ -38,6 +38,7 @@ void HFunSetTab::writeData()
     if(operaNote)
     {
         operaNote->id = SYS_FUN_OPNOTE_MANAGER;
+        operaNote->strObjName = "操作票管理";
         operaNote->var = QVariant(ui->operaNoteCheck->isChecked());
         pSysSetList->append(operaNote);
     }
@@ -47,6 +48,7 @@ void HFunSetTab::writeData()
     if(event)
     {
         event->id = SYS_FUN_EVENT_SCAN;
+        event->strObjName = "事件管理";
         event->var = QVariant(ui->eventCheck->isChecked());
         pSysSetList->append(event);
     }
@@ -56,6 +58,7 @@ void HFunSetTab::writeData()
     if(graphEditor)
     {
         graphEditor->id = SYS_FUN_GRAPH_EDITOR;
+        graphEditor->strObjName = "图形浏览管理";
         graphEditor->var = QVariant(ui->graphEditorCheck->isChecked());
         pSysSetList->append(graphEditor);
     }
@@ -65,6 +68,7 @@ void HFunSetTab::writeData()
     if(wfLock)
     {
         wfLock->id = SYS_FUN_WFLOCK_SCAN;
+        wfLock->strObjName = "五防锁管理";
         wfLock->var = QVariant(ui->lockCheck->isChecked());
         pSysSetList->append(wfLock);
     }
@@ -74,6 +78,7 @@ void HFunSetTab::writeData()
     if(workNote)
     {
         workNote->id = SYS_FUN_WORKNOET_MANGER;
+        workNote->strObjName = "工作票管理";
         workNote->var = QVariant(ui->workNoteCheck->isChecked());
         pSysSetList->append(workNote);
     }
@@ -83,6 +88,7 @@ void HFunSetTab::writeData()
     if(print)
     {
         print->id = SYS_FUN_PRINT_SET;
+        print->strObjName = "打印管理";
         print->var = QVariant(ui->printCheck->isChecked());
         pSysSetList->append(print);
     }
@@ -92,44 +98,66 @@ void HFunSetTab::writeData()
     if(wfConfig)
     {
         wfConfig->id = SYS_FUN_WF_CONFIG;
+        wfConfig->strObjName = "五防配置管理";
         wfConfig->var = QVariant(ui->wfConfigCheck->isChecked());
         pSysSetList->append(wfConfig);
     }
 
-    //USB电脑钥匙
-    SYSSET *keyUSB = new SYSSET;
-    if(keyUSB)
+    //No电脑钥匙
+    bool bCheck = ui->keyNoRadio->isChecked();
+    if(bCheck)
     {
-        keyUSB->id = SYS_KEY_NR_USB;
-        keyUSB->var = QVariant(ui->keyUsbRadio->isChecked());
-        pSysSetList->append(keyUSB);
+        SYSSET *keyNo = new SYSSET;
+        if(keyNo)
+        {
+            keyNo->id = SYS_KEY_NULL;
+            keyNo->strObjName = "无电脑钥匙";
+            keyNo->var = QVariant(bCheck);
+            pSysSetList->append(keyNo);
+        }
     }
 
-    //No电脑钥匙
-    SYSSET *keyNo = new SYSSET;
-    if(keyNo)
+
+    //USB电脑钥匙
+    bCheck = ui->keyUsbRadio->isChecked();
+    if(bCheck)
     {
-        keyNo->id = SYS_KEY_NULL;
-        keyNo->var = QVariant(ui->keyNoRadio->isChecked());
-        pSysSetList->append(keyNo);
+        SYSSET *keyUSB = new SYSSET;
+        if(keyUSB)
+        {
+            keyUSB->id = SYS_KEY_NR_USB;
+            keyUSB->strObjName = "USB电脑钥匙";
+            keyUSB->var = QVariant(bCheck);
+            pSysSetList->append(keyUSB);
+        }
     }
 
     //26版钥匙
-    SYSSET *keyYT26 = new SYSSET;
-    if(keyYT26)
+    bCheck = ui->key26Radio->isChecked();
+    if(bCheck)
     {
-        keyYT26->id = SYS_KEY_YT26;
-        keyYT26->var = QVariant(ui->key26Radio->isChecked());
-        pSysSetList->append(keyYT26);
+        SYSSET *keyYT26 = new SYSSET;
+        if(keyYT26)
+        {
+            keyYT26->id = SYS_KEY_YT26;
+            keyYT26->strObjName = "26版电脑钥匙";
+            keyYT26->var = QVariant(bCheck);
+            pSysSetList->append(keyYT26);
+        }
     }
 
     //27版钥匙
-    SYSSET *keyYT27 = new SYSSET;
-    if(keyYT27)
+    bCheck = ui->key27Radio->isChecked();
+    if(bCheck)
     {
-        keyYT27->id = SYS_KEY_YT27;
-        keyYT27->var = QVariant(ui->key27Radio->isChecked());
-        pSysSetList->append(keyYT27);
+        SYSSET *keyYT27 = new SYSSET;
+        if(keyYT27)
+        {
+            keyYT27->id = SYS_KEY_YT27;
+            keyYT27->strObjName = "27版电脑钥匙";
+            keyYT27->var = QVariant(bCheck);
+            pSysSetList->append(keyYT27);
+        }
     }
 
 }
@@ -145,80 +173,47 @@ void HFunSetTab::readData()
         {
             if(sysSet->id == SYS_FUN_OPNOTE_MANAGER)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->operaNoteCheck->setChecked(bChecked);
+                ui->operaNoteCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_FUN_PRINT_SET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->printCheck->setChecked(bChecked);
+                ui->printCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_FUN_WORKNOET_MANGER)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->workNoteCheck->setChecked(bChecked);
+                ui->workNoteCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_FUN_GRAPH_EDITOR)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->graphEditorCheck->setChecked(bChecked);
+                ui->graphEditorCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_FUN_EVENT_SCAN)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->eventCheck->setChecked(bChecked);
+                ui->eventCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_FUN_WFLOCK_SCAN)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->lockCheck->setChecked(bChecked);
+                ui->lockCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_FUN_WF_CONFIG)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->wfConfigCheck->setChecked(bChecked);
+                ui->wfConfigCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_KEY_NULL)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->keyNoRadio->setChecked(bChecked);
+                ui->keyNoRadio->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_KEY_YT26)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->key26Radio->setChecked(bChecked);
+                ui->key26Radio->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_KEY_YT27)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->key27Radio->setChecked(bChecked);
+                ui->key27Radio->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_KEY_NR_USB)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->keyUsbRadio->setChecked(bChecked);
+                ui->keyUsbRadio->setChecked(sysSet->var.toBool());
             }
         }
     }

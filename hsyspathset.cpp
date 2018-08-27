@@ -2,7 +2,7 @@
 #include "ui_syspathset.h"
 #include <QDir>
 #include <QFileDialog>
-
+#include <QProcessEnvironment>
 HSysPathTab::HSysPathTab(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SysPath)
@@ -22,89 +22,33 @@ HSysPathTab::~HSysPathTab()
 void HSysPathTab::initTab()
 {
     clear();
-    QString strPath = QDir::currentPath();
-    //strPath += "sound";
+    QString strConfigFilePath = QProcessEnvironment::systemEnvironment().value("wfsystem_dir");
+    if(strConfigFilePath.isEmpty())
+    {
+        strConfigFilePath = QCoreApplication::applicationDirPath();
+        strConfigFilePath = strConfigFilePath.left(strConfigFilePath.lastIndexOf("/"));
+    }
+    m_strAppPath = strConfigFilePath;
 
     bool bPathUnite = true;
     ui->pathUniteCheck->setChecked(bPathUnite);
-    if(bPathUnite)
-    {
-        ui->dataBasePathEdit->setText(strPath);
-        ui->dataBasePathEdit->setCursorPosition(0);
-        ui->dataBasePathEdit->setReadOnly(true);
-        ui->dataBasePathBtn->setEnabled(false);
-
-        ui->symbolPathEdit->setText(strPath);
-        ui->symbolPathEdit->setCursorPosition(0);
-        ui->symbolPathEdit->setReadOnly(true);
-        ui->symbolPathBtn->setEnabled(false);
-
-        ui->eventPathEdit->setText(strPath);
-        ui->eventPathEdit->setCursorPosition(0);
-        ui->eventPathEdit->setReadOnly(true);
-        ui->eventPathBtn->setEnabled(false);
-
-        ui->iniPathEdit->setText(strPath);
-        ui->iniPathEdit->setCursorPosition(0);
-        ui->iniPathEdit->setReadOnly(true);
-        ui->iniPathBtn->setEnabled(false);
-
-        ui->operaNotePathEdit->setText(strPath);
-        ui->operaNotePathEdit->setCursorPosition(0);
-        ui->operaNotePathEdit->setReadOnly(true);
-        ui->operaNotePathBtn->setEnabled(false);
-
-        ui->bitmapPathEdit->setText(strPath);
-        ui->bitmapPathEdit->setCursorPosition(0);
-        ui->bitmapPathEdit->setReadOnly(true);
-        ui->bitmapPathBtn->setEnabled(false);
-
-        ui->workNotePathEdit->setText(strPath);
-        ui->workNotePathEdit->setCursorPosition(0);
-        ui->workNotePathEdit->setReadOnly(true);
-        ui->workNotePathBtn->setEnabled(false);
-
-        ui->mediaPathEdit->setText(strPath);
-        ui->mediaPathEdit->setCursorPosition(0);
-        ui->mediaPathEdit->setReadOnly(true);
-        ui->mediaPathBtn->setEnabled(false);
-
-        ui->graphPathEdit->setText(strPath);
-        ui->graphPathEdit->setCursorPosition(0);
-        ui->graphPathEdit->setReadOnly(true);
-        ui->graphPathBtn->setEnabled(false);
-
-        ui->paiPathEdit->setText(strPath);
-        ui->paiPathEdit->setCursorPosition(0);
-        ui->paiPathEdit->setReadOnly(true);
-        ui->paiPathBtn->setEnabled(false);
-
-        ui->filPathEdit->setText(strPath);
-        ui->filPathEdit->setCursorPosition(0);
-        ui->filPathEdit->setReadOnly(true);
-        ui->filPathBtn->setEnabled(false);
-
-        ui->pluginPathEdit->setText(strPath);
-        ui->pluginPathEdit->setCursorPosition(0);
-        ui->pluginPathEdit->setReadOnly(true);
-        ui->pluginPathBtn->setEnabled(false);
-    }
+    ui->pathUniteEdit->setText(m_strAppPath);
+    //读取时应该所有都读取，读取结束后按照此标志来进行设置
 
     connect(ui->pathUniteCheck,SIGNAL(clicked()),this,SLOT(pathUniteCheck()));
     connect(ui->pathUniteBtn,SIGNAL(clicked()),this,SLOT(pathUnite()));
+
     connect(ui->dataBasePathBtn,SIGNAL(clicked()),this,SLOT(dataBasePath()));
-    connect(ui->symbolPathBtn,SIGNAL(clicked()),this,SLOT(symbolPath()));
+    connect(ui->pluginPathBtn,SIGNAL(clicked()),this,SLOT(pluginPath()));
     connect(ui->eventPathBtn,SIGNAL(clicked()),this,SLOT(eventPath()));
-    connect(ui->iniPathBtn,SIGNAL(clicked()),this,SLOT(iniPath()));
     connect(ui->operaNotePathBtn,SIGNAL(clicked()),this,SLOT(operaNotePath()));
-    connect(ui->bitmapPathBtn,SIGNAL(clicked()),this,SLOT(bitmapPath()));
     connect(ui->workNotePathBtn,SIGNAL(clicked()),this,SLOT(workNotePath()));
+
+    connect(ui->iconPathBtn,SIGNAL(clicked()),this,SLOT(iconPath()));
+    connect(ui->iniPathBtn,SIGNAL(clicked()),this,SLOT(iniPath()));
     connect(ui->mediaPathBtn,SIGNAL(clicked()),this,SLOT(mediaPath()));
     connect(ui->graphPathBtn,SIGNAL(clicked()),this,SLOT(graphPath()));
     connect(ui->paiPathBtn,SIGNAL(clicked()),this,SLOT(paiPath()));
-    connect(ui->filPathBtn,SIGNAL(clicked()),this,SLOT(filPath()));
-    connect(ui->pluginPathBtn,SIGNAL(clicked()),this,SLOT(pluginPath()));
-
 }
 
 void HSysPathTab::writeData()
@@ -114,7 +58,8 @@ void HSysPathTab::writeData()
     SYSSET *pathUniteCheck = new SYSSET;
     if(pathUniteCheck)
     {
-        pathUniteCheck->id = SYS_PATH_DATA_SET;
+        pathUniteCheck->id = SYS_PATH_UNITE_CHECK;
+        pathUniteCheck->strObjName = QStringLiteral("是否统一设置");
         pathUniteCheck->var = QVariant(ui->pathUniteCheck->isChecked());
         pSysSetList->append(pathUniteCheck);
     }
@@ -122,71 +67,71 @@ void HSysPathTab::writeData()
     SYSSET *pathUniteEdit = new SYSSET;
     if(pathUniteEdit)
     {
-        pathUniteEdit->id = SYS_PATH_DATA_SET;
+        pathUniteEdit->id = SYS_PATH_UNITE_SET;
+        pathUniteCheck->strObjName = QStringLiteral("统一路径");
         pathUniteEdit->var = QVariant(ui->pathUniteEdit->text());
         pSysSetList->append(pathUniteEdit);
+    }
+
+    SYSSET *pluginPathEdit = new SYSSET;
+    if(pluginPathEdit)
+    {
+        pluginPathEdit->id = SYS_PATH_PLUGIN_SET;
+        pluginPathEdit->strObjName = QStringLiteral("插件库路径");
+        pluginPathEdit->var = QVariant(ui->pluginPathEdit->text());
+        pSysSetList->append(pluginPathEdit);
     }
 
     SYSSET *dataBasePathEdit = new SYSSET;
     if(dataBasePathEdit)
     {
         dataBasePathEdit->id = SYS_PATH_DATA_SET;
+        dataBasePathEdit->strObjName = QStringLiteral("数据库路径");
         dataBasePathEdit->var = QVariant(ui->dataBasePathEdit->text());
         pSysSetList->append(dataBasePathEdit);
-    }
-
-    SYSSET *symbolPathEdit = new SYSSET;
-    if(symbolPathEdit)
-    {
-        symbolPathEdit->id = SYS_PATH_ICON_SET;
-        symbolPathEdit->var = QVariant(ui->symbolPathEdit->text());
-        pSysSetList->append(symbolPathEdit);
     }
 
     SYSSET *eventPathEdit = new SYSSET;
     if(eventPathEdit)
     {
         eventPathEdit->id = SYS_PATH_EVENT_SET;
+        eventPathEdit->strObjName = QStringLiteral("事件库路径");
         eventPathEdit->var = QVariant(ui->eventPathEdit->text());
         pSysSetList->append(eventPathEdit);
-    }
-
-    SYSSET *iniPathEdit = new SYSSET;
-    if(iniPathEdit)
-    {
-        iniPathEdit->id = SYS_PATH_INI_SET;
-        iniPathEdit->var = QVariant(ui->iniPathEdit->text());
-        pSysSetList->append(iniPathEdit);
     }
 
     SYSSET *operaNotePathEdit = new SYSSET;
     if(operaNotePathEdit)
     {
         operaNotePathEdit->id = SYS_PATH_OPSHEET_SET;
+        operaNotePathEdit->strObjName = QStringLiteral("操作票库路径");
         operaNotePathEdit->var = QVariant(ui->operaNotePathEdit->text());
         pSysSetList->append(operaNotePathEdit);
-    }
-
-    SYSSET *bitmapPathEdit = new SYSSET;
-    if(bitmapPathEdit)
-    {
-        bitmapPathEdit->id = SYS_PATH_BITMAP_SET;
-        bitmapPathEdit->var = QVariant(ui->bitmapPathEdit->text());
-        pSysSetList->append(bitmapPathEdit);
     }
 
     SYSSET *workNotePathEdit = new SYSSET;
     if(workNotePathEdit)
     {
         workNotePathEdit->id = SYS_PATH_WORKNOTE_SET;
+        workNotePathEdit->strObjName = QStringLiteral("工作票库路径");
         workNotePathEdit->var = QVariant(ui->workNotePathEdit->text());
         pSysSetList->append(workNotePathEdit);
+    }
+
+    SYSSET *iconPathEdit = new SYSSET;
+    if(iconPathEdit)
+    {
+        iconPathEdit->id = SYS_PATH_ICON_SET;
+        iconPathEdit->strObjName = QStringLiteral("图符库路径");
+        iconPathEdit->var = QVariant(ui->iconPathEdit->text());
+        pSysSetList->append(iconPathEdit);
     }
 
     SYSSET *mediaPathEdit = new SYSSET;
     if(mediaPathEdit)
     {
         mediaPathEdit->id = SYS_PATH_MEDIR_SET;
+        mediaPathEdit->strObjName = QStringLiteral("媒体库路径");
         mediaPathEdit->var = QVariant(ui->mediaPathEdit->text());
         pSysSetList->append(mediaPathEdit);
     }
@@ -195,6 +140,7 @@ void HSysPathTab::writeData()
     if(graphPathEdit)
     {
         graphPathEdit->id = SYS_PATH_GRAPH_SET;
+        graphPathEdit->strObjName = QStringLiteral("图形库路径");
         graphPathEdit->var = QVariant(ui->graphPathEdit->text());
         pSysSetList->append(graphPathEdit);
     }
@@ -203,24 +149,18 @@ void HSysPathTab::writeData()
     if(paiPathEdit)
     {
         paiPathEdit->id = SYS_PATH_SIGNPAD_SET;
+        paiPathEdit->strObjName = QStringLiteral("接地牌库路径");
         paiPathEdit->var = QVariant(ui->paiPathEdit->text());
         pSysSetList->append(paiPathEdit);
     }
 
-    SYSSET *filPathEdit = new SYSSET;
-    if(filPathEdit)
+    SYSSET *iniPathEdit = new SYSSET;
+    if(iniPathEdit)
     {
-        filPathEdit->id = SYS_PATH_FIL_SET;
-        filPathEdit->var = QVariant(ui->filPathEdit->text());
-        pSysSetList->append(filPathEdit);
-    }
-
-    SYSSET *pluginPathEdit = new SYSSET;
-    if(pluginPathEdit)
-    {
-        pluginPathEdit->id = SYS_PATH_PLUGIN_SET;
-        pluginPathEdit->var = QVariant(ui->pluginPathEdit->text());
-        pSysSetList->append(pluginPathEdit);
+        iniPathEdit->id = SYS_PATH_INI_SET;
+        iniPathEdit->strObjName = QStringLiteral("配置库路径");
+        iniPathEdit->var = QVariant(ui->iniPathEdit->text());
+        pSysSetList->append(iniPathEdit);
     }
 }
 
@@ -235,26 +175,22 @@ void HSysPathTab::readData()
         {
             if(sysSet->id == SYS_PATH_UNITE_SET)
             {
-                ui->pathUniteEdit->setText(sysSet->var.toString());
+                if(sysSet->var.isValid())
+                    ui->pathUniteEdit->setText(sysSet->var.toString());
+                else
+                    ui->pathUniteEdit->setText(m_strAppPath);
             }
             else if(sysSet->id == SYS_PATH_UNITE_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->pathUniteCheck->setChecked(bChecked);
+                ui->pathUniteCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == SYS_PATH_DATA_SET)
             {
                 ui->dataBasePathEdit->setText(sysSet->var.toString());
             }
-            else if(sysSet->id == SYS_PATH_ICON_SET)
+            else if(sysSet->id == SYS_PATH_PLUGIN_SET)
             {
-                ui->symbolPathEdit->setText(sysSet->var.toString());
-            }
-            else if(sysSet->id == SYS_PATH_INI_SET)
-            {
-                ui->iniPathEdit->setText(sysSet->var.toString());
+                ui->pluginPathEdit->setText(sysSet->var.toString());
             }
             else if(sysSet->id == SYS_PATH_EVENT_SET)
             {
@@ -264,9 +200,9 @@ void HSysPathTab::readData()
             {
                 ui->operaNotePathEdit->setText(sysSet->var.toString());
             }
-            else if(sysSet->id == SYS_PATH_BITMAP_SET)
+            else if(sysSet->id == SYS_PATH_ICON_SET)
             {
-                ui->bitmapPathEdit->setText(sysSet->var.toString());
+                ui->iconPathEdit->setText(sysSet->var.toString());
             }
             else if(sysSet->id == SYS_PATH_WORKNOTE_SET)
             {
@@ -284,16 +220,14 @@ void HSysPathTab::readData()
             {
                 ui->paiPathEdit->setText(sysSet->var.toString());
             }
-            else if(sysSet->id == SYS_PATH_FIL_SET)
+            else if(sysSet->id == SYS_PATH_INI_SET)
             {
-                ui->filPathEdit->setText(sysSet->var.toString());
-            }
-            else if(sysSet->id == SYS_PATH_PLUGIN_SET)
-            {
-                ui->pluginPathEdit->setText(sysSet->var.toString());
+                ui->iniPathEdit->setText(sysSet->var.toString());
             }
         }
     }
+    //读完需要触发一下统一check信号
+    pathUniteCheck();
 }
 
 void HSysPathTab::clear()
@@ -309,116 +243,110 @@ void HSysPathTab::pathUniteCheck()
     bool bPathUnite = ui->pathUniteCheck->isChecked();
     if(bPathUnite)
     {
-        QString strPath = ui->pathUniteEdit->text();
+        QString strPath1 = ui->pathUniteEdit->text();
+        strPath1 += "/";
+        QString strSubPath = PATH_DATA;
+        QString strPath =  strPath1 + strSubPath + "/";
         ui->dataBasePathEdit->setText(strPath);
         ui->dataBasePathEdit->setCursorPosition(0);
         ui->dataBasePathEdit->setReadOnly(true);
         ui->dataBasePathBtn->setEnabled(false);
+        ui->dataBasePathEdit->setToolTip(strPath);
 
-        ui->symbolPathEdit->setText(strPath);
-        ui->symbolPathEdit->setCursorPosition(0);
-        ui->symbolPathEdit->setReadOnly(true);
-        ui->symbolPathBtn->setEnabled(false);
+        strSubPath = PATH_PLUGIN;
+        strPath =  strPath1 + strSubPath + "/";
+        ui->pluginPathEdit->setText(strPath);
+        ui->pluginPathEdit->setCursorPosition(0);
+        ui->pluginPathEdit->setReadOnly(true);
+        ui->pluginPathBtn->setEnabled(false);
 
+        strSubPath = PATH_EVENT;
+        strPath =  strPath1 + strSubPath + "/";
         ui->eventPathEdit->setText(strPath);
         ui->eventPathEdit->setCursorPosition(0);
         ui->eventPathEdit->setReadOnly(true);
         ui->eventPathBtn->setEnabled(false);
 
-        ui->iniPathEdit->setText(strPath);
-        ui->iniPathEdit->setCursorPosition(0);
-        ui->iniPathEdit->setReadOnly(true);
-        ui->iniPathBtn->setEnabled(false);
-
+        strSubPath = PATH_OPERATETICKET;
+        strPath =  strPath1 + strSubPath + "/";
         ui->operaNotePathEdit->setText(strPath);
         ui->operaNotePathEdit->setCursorPosition(0);
         ui->operaNotePathEdit->setReadOnly(true);
         ui->operaNotePathBtn->setEnabled(false);
 
-        ui->bitmapPathEdit->setText(strPath);
-        ui->bitmapPathEdit->setCursorPosition(0);
-        ui->bitmapPathEdit->setReadOnly(true);
-        ui->bitmapPathBtn->setEnabled(false);
-
+        strSubPath = PATH_WORKNOTE;
+        strPath =  strPath1 + strSubPath + "/";
         ui->workNotePathEdit->setText(strPath);
         ui->workNotePathEdit->setCursorPosition(0);
         ui->workNotePathEdit->setReadOnly(true);
         ui->workNotePathBtn->setEnabled(false);
 
-        ui->mediaPathEdit->setText(strPath);
-        ui->mediaPathEdit->setCursorPosition(0);
-        ui->mediaPathEdit->setReadOnly(true);
-        ui->mediaPathBtn->setEnabled(false);
+        strSubPath = PATH_ICON;
+        strPath =  strPath1 + strSubPath + "/";
+        ui->iconPathEdit->setText(strPath);
+        ui->iconPathEdit->setCursorPosition(0);
+        ui->iconPathEdit->setReadOnly(true);
+        ui->iconPathBtn->setEnabled(false);
 
+        strSubPath = PATH_GRAPH;
+        strPath =  strPath1 + strSubPath + "/";
         ui->graphPathEdit->setText(strPath);
         ui->graphPathEdit->setCursorPosition(0);
         ui->graphPathEdit->setReadOnly(true);
         ui->graphPathBtn->setEnabled(false);
 
+        strSubPath = PATH_MEDIA;
+        strPath =  strPath1 + strSubPath + "/";
+        ui->mediaPathEdit->setText(strPath);
+        ui->mediaPathEdit->setCursorPosition(0);
+        ui->mediaPathEdit->setReadOnly(true);
+        ui->mediaPathBtn->setEnabled(false);
+
+        strSubPath = PATH_SIGNPAD;
+        strPath =  strPath1 + strSubPath + "/";
         ui->paiPathEdit->setText(strPath);
         ui->paiPathEdit->setCursorPosition(0);
         ui->paiPathEdit->setReadOnly(true);
         ui->paiPathBtn->setEnabled(false);
 
-        ui->filPathEdit->setText(strPath);
-        ui->filPathEdit->setCursorPosition(0);
-        ui->filPathEdit->setReadOnly(true);
-        ui->filPathBtn->setEnabled(false);
-
-        ui->pluginPathEdit->setText(strPath);
-        ui->pluginPathEdit->setCursorPosition(0);
-        ui->pluginPathEdit->setReadOnly(true);
-        ui->pluginPathBtn->setEnabled(false);
+        strSubPath = PATH_INI;
+        strPath =  strPath1 + strSubPath + "/";
+        ui->iniPathEdit->setText(strPath);
+        ui->iniPathEdit->setCursorPosition(0);
+        ui->iniPathEdit->setReadOnly(true);
+        ui->iniPathBtn->setEnabled(false);
     }
     else
     {
-        //QString strPath = ui->pathUniteEdit->text();
-        //ui->dataBasePathEdit->setText(strPath);
+        ui->pluginPathEdit->setReadOnly(false);
+        ui->pluginPathBtn->setEnabled(true);
+
         ui->dataBasePathEdit->setReadOnly(false);
         ui->dataBasePathBtn->setEnabled(true);
 
-        //ui->symbolPathEdit->setText(strPath);
-        ui->symbolPathEdit->setReadOnly(false);
-        ui->symbolPathBtn->setEnabled(true);
-
-        //ui->eventPathEdit->setText(strPath);
         ui->eventPathEdit->setReadOnly(false);
         ui->eventPathBtn->setEnabled(true);
 
-        //ui->objGroupPathEdit->setText(strPath);
-        ui->iniPathEdit->setReadOnly(false);
-        ui->iniPathBtn->setEnabled(true);
-
-        //ui->operaNotePathEdit->setText(strPath);
         ui->operaNotePathEdit->setReadOnly(false);
         ui->operaNotePathBtn->setEnabled(true);
 
-        //ui->bitmapPathEdit->setText(strPath);
-        ui->bitmapPathEdit->setReadOnly(false);
-        ui->bitmapPathBtn->setEnabled(true);
-
-        //ui->workNotePathEdit->setText(strPath);
         ui->workNotePathEdit->setReadOnly(false);
         ui->workNotePathBtn->setEnabled(true);
 
-        //ui->mediaPathEdit->setText(strPath);
-        ui->mediaPathEdit->setReadOnly(false);
-        ui->mediaPathBtn->setEnabled(true);
+        ui->iconPathEdit->setReadOnly(false);
+        ui->iconPathBtn->setEnabled(true);
 
-        //ui->graphPathEdit->setText(strPath);
         ui->graphPathEdit->setReadOnly(false);
         ui->graphPathBtn->setEnabled(true);
 
-        //ui->paiPathEdit->setText(strPath);
+        ui->mediaPathEdit->setReadOnly(false);
+        ui->mediaPathBtn->setEnabled(true);
+
         ui->paiPathEdit->setReadOnly(false);
         ui->paiPathBtn->setEnabled(true);
 
-        //ui->filPathEdit->setText(strPath);
-        ui->filPathEdit->setReadOnly(false);
-        ui->filPathBtn->setEnabled(true);
-
-        ui->pluginPathEdit->setReadOnly(false);
-        ui->pluginPathBtn->setEnabled(true);
+        ui->iniPathEdit->setReadOnly(false);
+        ui->iniPathBtn->setEnabled(true);
     }
 }
 
@@ -434,8 +362,7 @@ void HSysPathTab::pathUnite()
     ui->pathUniteEdit->setCursorPosition(0);
 
     //统一设置其他路径
-    QString subDir;
-    subDir = dir + "//Data"; //....遗留问题---huangw
+    pathUniteCheck();
 }
 
 void HSysPathTab::dataBasePath()
@@ -450,16 +377,16 @@ void HSysPathTab::dataBasePath()
     ui->dataBasePathEdit->setCursorPosition(0);
 }
 
-void HSysPathTab::symbolPath()
+void HSysPathTab::pluginPath()
 {
     QString strPath;
-    strPath = ui->symbolPathEdit->text();
+    strPath = ui->pluginPathEdit->text();
     if(strPath.isEmpty())
         strPath = QDir::currentPath();
     QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if(dir.isEmpty()) return;
-    ui->symbolPathEdit->setText(dir);
-    ui->symbolPathEdit->setCursorPosition(0);
+    ui->pluginPathEdit->setText(dir);
+    ui->pluginPathEdit->setCursorPosition(0);
 }
 
 void HSysPathTab::eventPath()
@@ -474,18 +401,6 @@ void HSysPathTab::eventPath()
     ui->eventPathEdit->setCursorPosition(0);
 }
 
-void HSysPathTab::iniPath()
-{
-    QString strPath;
-    strPath = ui->iniPathEdit->text();
-    if(strPath.isEmpty())
-        strPath = QDir::currentPath();
-    QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if(dir.isEmpty()) return;
-    ui->iniPathEdit->setText(dir);
-    ui->iniPathEdit->setCursorPosition(0);
-}
-
 void HSysPathTab::operaNotePath()
 {
     QString strPath;
@@ -498,18 +413,6 @@ void HSysPathTab::operaNotePath()
     ui->operaNotePathEdit->setCursorPosition(0);
 }
 
-void HSysPathTab::bitmapPath()
-{
-    QString strPath;
-    strPath = ui->bitmapPathEdit->text();
-    if(strPath.isEmpty())
-        strPath = QDir::currentPath();
-    QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if(dir.isEmpty()) return;
-    ui->bitmapPathEdit->setText(dir);
-    ui->bitmapPathEdit->setCursorPosition(0);
-}
-
 void HSysPathTab::workNotePath()
 {
     QString strPath;
@@ -520,6 +423,19 @@ void HSysPathTab::workNotePath()
     if(dir.isEmpty()) return;
     ui->workNotePathEdit->setText(dir);
     ui->workNotePathEdit->setCursorPosition(0);
+}
+
+//right
+void HSysPathTab::iconPath()
+{
+    QString strPath;
+    strPath = ui->iconPathEdit->text();
+    if(strPath.isEmpty())
+        strPath = QDir::currentPath();
+    QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if(dir.isEmpty()) return;
+    ui->iconPathEdit->setText(dir);
+    ui->iconPathEdit->setCursorPosition(0);
 }
 
 void HSysPathTab::mediaPath()
@@ -558,26 +474,14 @@ void HSysPathTab::paiPath()
     ui->paiPathEdit->setCursorPosition(0);
 }
 
-void HSysPathTab::filPath()
+void HSysPathTab::iniPath()
 {
     QString strPath;
-    strPath = ui->filPathEdit->text();
+    strPath = ui->iniPathEdit->text();
     if(strPath.isEmpty())
         strPath = QDir::currentPath();
     QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if(dir.isEmpty()) return;
-    ui->filPathEdit->setText(dir);
-    ui->filPathEdit->setCursorPosition(0);
-}
-
-void HSysPathTab::pluginPath()
-{
-    QString strPath;
-    strPath = ui->pluginPathEdit->text();
-    if(strPath.isEmpty())
-        strPath = QDir::currentPath();
-    QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if(dir.isEmpty()) return;
-    ui->pluginPathEdit->setText(dir);
-    ui->pluginPathEdit->setCursorPosition(0);
+    ui->iniPathEdit->setText(dir);
+    ui->iniPathEdit->setCursorPosition(0);
 }

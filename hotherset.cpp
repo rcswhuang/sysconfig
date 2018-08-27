@@ -48,70 +48,39 @@ void HOtherSetTab::readData()
         {
             if(sysSet->id == PRIV_SAVE_PRE_TICKET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->savePreTicketCheck->setChecked(bChecked);
-
+                ui->savePreTicketCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == PRIV_OPERA_PRE_TICKET)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->operaPreTicketCheck->setChecked(bChecked);
-
+                ui->operaPreTicketCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == NAME_GROUP_NAME)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                 ui->groupNameRadio->setChecked(bChecked);
+                 ui->groupNameRadio->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == NAME_CUSTOM_NAME)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->customNameRadio->setChecked(bChecked);
-
+                ui->customNameRadio->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == STATE_CHANGE_STATION_NAME)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->stationNameCheck->setChecked(bChecked);
-
+                ui->stationNameCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == STATE_CHANGE_VOLTAGE)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                 ui->voltageCheck->setChecked(bChecked);
+                 ui->voltageCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == STATE_CHANGE_INTERVAL_NAME)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                 ui->interNameCheck->setChecked(bChecked);
+                 ui->interNameCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == STATE_CHANGE_DIGITAL_NAME)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                 ui->digitalNameCheck->setChecked(bChecked);
+                 ui->digitalNameCheck->setChecked(sysSet->var.toBool());
             }
             else if(sysSet->id == STATE_CHANGE_NULL)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                 ui->nullCheck->setChecked(bChecked);
+                 ui->nullCheck->setChecked(sysSet->var.toBool());
             }
         }
     }
@@ -124,7 +93,8 @@ void HOtherSetTab::writeData()
     if(operaPreTicket)
     {
         operaPreTicket->id = PRIV_OPERA_PRE_TICKET;
-        operaPreTicket->var = QVariant(ui->operaPreTicketCheck->text());
+        operaPreTicket->strObjName = ui->operaPreTicketCheck->text();
+        operaPreTicket->var = QVariant(ui->operaPreTicketCheck->isChecked());
         pSysSetList->append(operaPreTicket);
     }
 
@@ -132,31 +102,43 @@ void HOtherSetTab::writeData()
     if(savePreTicket)
     {
         savePreTicket->id = PRIV_SAVE_PRE_TICKET;
-        savePreTicket->var = QVariant(ui->savePreTicketCheck->text());
+        savePreTicket->strObjName = ui->savePreTicketCheck->text();
+        savePreTicket->var = QVariant(ui->savePreTicketCheck->isChecked());
         pSysSetList->append(savePreTicket);
     }
 
-    SYSSET *groupName = new SYSSET;
-    if(groupName)
+    bool bCheck = ui->groupNameRadio->isChecked();
+    if(bCheck)
     {
-        groupName->id = NAME_GROUP_NAME;
-        groupName->var = QVariant(ui->groupNameRadio->text());
-        pSysSetList->append(groupName);
+        SYSSET *groupName = new SYSSET;
+        if(groupName)
+        {
+            groupName->id = NAME_GROUP_NAME;
+            groupName->strObjName = ui->groupNameRadio->text();
+            groupName->var = QVariant(bCheck);
+            pSysSetList->append(groupName);
+        }
     }
 
-    SYSSET *customName = new SYSSET;
-    if(customName)
+    bCheck = ui->customNameRadio->isChecked();
+    if(bCheck)
     {
-        customName->id = NAME_CUSTOM_NAME;
-        customName->var = QVariant(ui->customNameRadio->text());
-        pSysSetList->append(customName);
+        SYSSET *customName = new SYSSET;
+        if(customName)
+        {
+            customName->id = NAME_CUSTOM_NAME;
+            customName->strObjName = ui->customNameRadio->text();
+            customName->var = QVariant(bCheck);
+            pSysSetList->append(customName);
+        }
     }
 
     SYSSET *stationName = new SYSSET;
     if(stationName)
     {
         stationName->id = STATE_CHANGE_STATION_NAME;
-        stationName->var = QVariant(ui->stationNameCheck->text());
+        stationName->strObjName = ui->stationNameCheck->text();
+        stationName->var = QVariant(ui->stationNameCheck->isChecked());
         pSysSetList->append(stationName);
     }
 
@@ -164,7 +146,8 @@ void HOtherSetTab::writeData()
     if(interName)
     {
         interName->id = STATE_CHANGE_INTERVAL_NAME;
-        interName->var = QVariant(ui->interNameCheck->text());
+        interName->strObjName = ui->interNameCheck->text();
+        interName->var = QVariant(ui->interNameCheck->isChecked());
         pSysSetList->append(interName);
     }
 
@@ -172,7 +155,8 @@ void HOtherSetTab::writeData()
     if(voltage)
     {
         voltage->id = STATE_CHANGE_VOLTAGE;
-        voltage->var = QVariant(ui->voltageCheck->text());
+        voltage->strObjName = ui->voltageCheck->text();
+        voltage->var = QVariant(ui->voltageCheck->isChecked());
         pSysSetList->append(voltage);
     }
 
@@ -180,7 +164,8 @@ void HOtherSetTab::writeData()
     if(digitalName)
     {
         digitalName->id = STATE_CHANGE_DIGITAL_NAME;
-        digitalName->var = QVariant(ui->digitalNameCheck->text());
+        digitalName->strObjName = ui->digitalNameCheck->text();
+        digitalName->var = QVariant(ui->digitalNameCheck->isChecked());
         pSysSetList->append(digitalName);
     }
 
@@ -188,7 +173,8 @@ void HOtherSetTab::writeData()
     if(null)
     {
         null->id = STATE_CHANGE_NULL;
-        null->var = QVariant(ui->nullCheck->text());
+        null->strObjName = ui->nullCheck->text();
+        null->var = QVariant(ui->nullCheck->isChecked());
         pSysSetList->append(null);
     }
 }

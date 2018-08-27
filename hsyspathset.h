@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "hconfigapi.h"
+#include "publicdata.h"
 namespace Ui {
 class SysPath;
 }
@@ -21,24 +22,25 @@ public:
 
 public:
     HSysSetList* pSysSetList;
+    QString m_strAppPath;
 private:
     Ui::SysPath *ui;
 
 private slots:
     void pathUniteCheck();
     void pathUnite();
+
     void dataBasePath();
-    void symbolPath();
+    void pluginPath();
     void eventPath();
-    void iniPath();
     void operaNotePath();
-    void bitmapPath();
     void workNotePath();
+
+    void iconPath();
     void mediaPath();
     void graphPath();
     void paiPath();
-    void filPath();
-    void pluginPath();
+    void iniPath();
 };
 
 #endif // HSYSPATHTAB_H

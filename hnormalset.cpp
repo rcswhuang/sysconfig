@@ -116,26 +116,42 @@ void HNormalSetTab::readData()
             }
             else if(sysSet->id == SYS_YX_CHANGE_COLOR)
             {
-                QString strYXChangeColor = "background-color:" + sysSet->var.toString();
-                ui->yxChangeColorBtn->setStyleSheet(strYXChangeColor);
+                QString strYXChangeColor1;
+                if(sysSet->var.isValid())
+                    strYXChangeColor1 = "background-color:" + sysSet->var.toString();
+                else
+                    strYXChangeColor1 = strYXChangeColor;
+                ui->yxChangeColorBtn->setStyleSheet(strYXChangeColor1);
 
             }
             else if(sysSet->id == SYS_YX_MANUAL_COLOR)
             {
-                QString strManualColor = "background-color:" + sysSet->var.toString();
-                ui->yxManualColorBtn->setStyleSheet(strManualColor);
+                QString strManualColor1;
+                if(sysSet->var.isValid())
+                    strManualColor1 = "background-color:" + sysSet->var.toString();
+                else
+                    strManualColor1 = strManualColor;
+                ui->yxManualColorBtn->setStyleSheet(strManualColor1);
 
             }
             else if(sysSet->id == SYS_YX_REPAIR_COLOR)
             {
-                QString strRepairColor = "background-color:" + sysSet->var.toString();
-                ui->repairColorBtn->setStyleSheet(strRepairColor);
+                QString strRepairColor1;
+                if(sysSet->var.isValid())
+                    strRepairColor1 = "background-color:" + sysSet->var.toString();
+                else
+                    strRepairColor1 = strRepairColor;
+                ui->repairColorBtn->setStyleSheet(strRepairColor1);
 
             }
             else if(sysSet->id == SYS_WF_STATUS_COLOR)
             {
-                QString strWFStatusColor = "background-color:" + sysSet->var.toString();
-                ui->wfStatusColorBtn->setStyleSheet(strWFStatusColor);
+                QString strWFStatusColor1;
+                if(sysSet->var.isValid())
+                    strWFStatusColor1 = "background-color:" + sysSet->var.toString();
+                else
+                    strWFStatusColor1 = strWFStatusColor;
+                ui->wfStatusColorBtn->setStyleSheet(strWFStatusColor1);
             }
             else if(sysSet->id == SYS_CTRL_SELECT_TIMEOUT)
             {
@@ -154,26 +170,17 @@ void HNormalSetTab::readData()
             }
             else if(sysSet->id == SYS_CTRL_GUARD)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->YKGuardCheck->setChecked(bChecked);
+                ui->YKGuardCheck->setChecked(sysSet->var.toBool());
 
             }
             else if(sysSet->id == SYS_CTRL_FORCED_CHECK)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                ui->YKCheckNameCheck->setChecked(bChecked);
+                ui->YKCheckNameCheck->setChecked(sysSet->var.toBool());
 
             }
             else if(sysSet->id == SYS_NUMBER_CASE_SENSITIVE)
             {
-                bool bChecked = false;
-                if(sysSet->var.toUInt() == 1)
-                    bChecked = true;
-                 ui->numberCaseCheck->setChecked(bChecked);
+                 ui->numberCaseCheck->setChecked(sysSet->var.toBool());
             }
         }
     }
@@ -187,6 +194,7 @@ void HNormalSetTab::writeData()
     if(passwordTime)
     {
         passwordTime->id = SYS_PASSWORD_VALID_TIME;
+        passwordTime->strObjName = "口令有效时间";
         passwordTime->var = QVariant(ui->passwordTime->text());
         pSysSetList->append(passwordTime);
     }
@@ -195,6 +203,7 @@ void HNormalSetTab::writeData()
     if(VYXTime)
     {
         VYXTime->id = SYS_SEND_VIRTUAL_YX_TIME;
+        VYXTime->strObjName = "虚遥信发送时间";
         VYXTime->var = QVariant(ui->VYXTimeEdit->text());
         pSysSetList->append(VYXTime);
     }
@@ -203,6 +212,7 @@ void HNormalSetTab::writeData()
     if(batYXTime)
     {
         batYXTime->id = SYS_BAT_YX_VALID_TIME;
+        batYXTime->strObjName = "批量置遥信时间";
         batYXTime->var = QVariant(ui->batYXTimeEdit->text());
         pSysSetList->append(batYXTime);
     }
@@ -212,6 +222,7 @@ void HNormalSetTab::writeData()
     if(yxclose)
     {
         yxclose->id = SYS_YX_CLOSE_SOUND;
+        yxclose->strObjName = "遥信合报警声音";
         yxclose->var = QVariant(ui->yxcloseEdit->text());
         pSysSetList->append(yxclose);
     }
@@ -220,6 +231,7 @@ void HNormalSetTab::writeData()
     if(yxopen)
     {
         yxopen->id = SYS_YX_OPEN_SOUND;
+        yxopen->strObjName = "遥信分报警声音";
         yxopen->var = QVariant(ui->yxopenEdit->text());
         pSysSetList->append(yxopen);
     }
@@ -228,6 +240,7 @@ void HNormalSetTab::writeData()
     if(statusFail)
     {
         statusFail->id = SYS_STATUS_CHECK_FAIL_SOUND;
+        statusFail->strObjName = "状态校验失败报警声音";
         statusFail->var = QVariant(ui->statusFailEdit->text());
         pSysSetList->append(statusFail);
     }
@@ -236,6 +249,7 @@ void HNormalSetTab::writeData()
     if(ruleFail)
     {
         ruleFail->id = SYS_RULE_CHECK_FAIL_SOUND;
+        ruleFail->strObjName = "规则校验失败报警声音";
         ruleFail->var = QVariant(ui->ruleFailEdit->text());
         pSysSetList->append(ruleFail);
     }
@@ -245,7 +259,8 @@ void HNormalSetTab::writeData()
     if(yxChangeColor)
     {
         yxChangeColor->id = SYS_YX_CHANGE_COLOR;
-        yxChangeColor->var = QVariant(ui->yxChangeColorBtn->text());
+        yxChangeColor->strObjName = "遥信变位颜色";
+        yxChangeColor->var = QVariant(strYXChangeColor);
         pSysSetList->append(yxChangeColor);
     }
 
@@ -253,7 +268,8 @@ void HNormalSetTab::writeData()
     if(yxManualColor)
     {
         yxManualColor->id = SYS_YX_MANUAL_COLOR;
-        yxManualColor->var = QVariant(ui->yxManualColorBtn->text());
+        yxManualColor->strObjName = "人工置数颜色";
+        yxManualColor->var = QVariant(strManualColor);
         pSysSetList->append(yxManualColor);
     }
 
@@ -261,15 +277,17 @@ void HNormalSetTab::writeData()
     if(repairColor)
     {
         repairColor->id = SYS_YX_REPAIR_COLOR;
-        repairColor->var = QVariant(ui->repairColorBtn->text());
+        repairColor->strObjName = "置检修颜色";
+        repairColor->var = QVariant(strRepairColor);
         pSysSetList->append(repairColor);
     }
 
     SYSSET *wfStatusColor = new SYSSET;
     if(wfStatusColor)
     {
-        wfStatusColor->id = SYS_RULE_CHECK_FAIL_SOUND;
-        wfStatusColor->var = QVariant(ui->wfStatusColorBtn->text());
+        wfStatusColor->id = SYS_WF_STATUS_COLOR;
+        wfStatusColor->strObjName = "五防投退颜色";
+        wfStatusColor->var = QVariant(strWFStatusColor);
         pSysSetList->append(wfStatusColor);
     }
 
@@ -278,6 +296,7 @@ void HNormalSetTab::writeData()
     if(ykSelectTime)
     {
         ykSelectTime->id = SYS_CTRL_SELECT_TIMEOUT;
+        ykSelectTime->strObjName = "遥控选择超时时间";
         ykSelectTime->var = QVariant(ui->ykSelectTimeEdit->text());
         pSysSetList->append(ykSelectTime);
     }
@@ -286,6 +305,7 @@ void HNormalSetTab::writeData()
     if(ykOperaTime)
     {
         ykOperaTime->id = SYS_CTRL_EXECUTE_TIMEOUT;
+        ykOperaTime->strObjName = "遥控执行超时时间";
         ykOperaTime->var = QVariant(ui->ykOperaTimeEdit->text());
         pSysSetList->append(ykOperaTime);
     }
@@ -294,6 +314,7 @@ void HNormalSetTab::writeData()
     if(doubleYXTime)
     {
         doubleYXTime->id = SYS_CTRL_DOUBLEYX_TIMEOUT;
+        doubleYXTime->strObjName = "双位置判断时间";
         doubleYXTime->var = QVariant(ui->doubleYXTimeEdit->text());
         pSysSetList->append(doubleYXTime);
     }
@@ -302,7 +323,8 @@ void HNormalSetTab::writeData()
     if(YKGuardCheck)
     {
         YKGuardCheck->id = SYS_CTRL_GUARD;
-        YKGuardCheck->var = QVariant(ui->wfStatusColorBtn->text());
+        YKGuardCheck->strObjName = "强制遥控监控人";
+        YKGuardCheck->var = QVariant(ui->YKGuardCheck->isChecked());
         pSysSetList->append(YKGuardCheck);
     }
 
@@ -310,7 +332,8 @@ void HNormalSetTab::writeData()
     if(YKCheckNameCheck)
     {
         YKCheckNameCheck->id = SYS_CTRL_FORCED_CHECK;
-        YKCheckNameCheck->var = QVariant(ui->wfStatusColorBtn->text());
+        YKCheckNameCheck->strObjName = "强制校验遥控名称";
+        YKCheckNameCheck->var = QVariant(ui->YKCheckNameCheck->isChecked());
         pSysSetList->append(YKCheckNameCheck);
     }
 
@@ -318,7 +341,8 @@ void HNormalSetTab::writeData()
     if(numberCaseCheck)
     {
         numberCaseCheck->id = SYS_NUMBER_CASE_SENSITIVE;
-        numberCaseCheck->var = QVariant(ui->wfStatusColorBtn->text());
+        numberCaseCheck->strObjName = "调度编号大小写敏感";
+        numberCaseCheck->var = QVariant(ui->numberCaseCheck->isChecked());
         pSysSetList->append(numberCaseCheck);
     }
 }
