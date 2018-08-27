@@ -26,7 +26,6 @@ void HFunSetTab::initTab()
     ui->workNoteCheck->setChecked(true);
     ui->printCheck->setChecked(true);
     ui->wfConfigCheck->setChecked(true);
-
     ui->keyNoRadio->setChecked(true);
 }
 
