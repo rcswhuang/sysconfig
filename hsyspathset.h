@@ -30,7 +30,7 @@ private slots:
     void dataBasePath();
     void symbolPath();
     void eventPath();
-    void objGroupPath();
+    void iniPath();
     void operaNotePath();
     void bitmapPath();
     void workNotePath();
@@ -38,6 +38,7 @@ private slots:
     void graphPath();
     void paiPath();
     void filPath();
+    void pluginPath();
 };
 
 #endif // HSYSPATHTAB_H

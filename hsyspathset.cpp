@@ -44,10 +44,10 @@ void HSysPathTab::initTab()
         ui->eventPathEdit->setReadOnly(true);
         ui->eventPathBtn->setEnabled(false);
 
-        ui->objGroupPathEdit->setText(strPath);
-        ui->objGroupPathEdit->setCursorPosition(0);
-        ui->objGroupPathEdit->setReadOnly(true);
-        ui->objGroupPathBtn->setEnabled(false);
+        ui->iniPathEdit->setText(strPath);
+        ui->iniPathEdit->setCursorPosition(0);
+        ui->iniPathEdit->setReadOnly(true);
+        ui->iniPathBtn->setEnabled(false);
 
         ui->operaNotePathEdit->setText(strPath);
         ui->operaNotePathEdit->setCursorPosition(0);
@@ -83,6 +83,11 @@ void HSysPathTab::initTab()
         ui->filPathEdit->setCursorPosition(0);
         ui->filPathEdit->setReadOnly(true);
         ui->filPathBtn->setEnabled(false);
+
+        ui->pluginPathEdit->setText(strPath);
+        ui->pluginPathEdit->setCursorPosition(0);
+        ui->pluginPathEdit->setReadOnly(true);
+        ui->pluginPathBtn->setEnabled(false);
     }
 
     connect(ui->pathUniteCheck,SIGNAL(clicked()),this,SLOT(pathUniteCheck()));
@@ -90,7 +95,7 @@ void HSysPathTab::initTab()
     connect(ui->dataBasePathBtn,SIGNAL(clicked()),this,SLOT(dataBasePath()));
     connect(ui->symbolPathBtn,SIGNAL(clicked()),this,SLOT(symbolPath()));
     connect(ui->eventPathBtn,SIGNAL(clicked()),this,SLOT(eventPath()));
-    connect(ui->objGroupPathBtn,SIGNAL(clicked()),this,SLOT(objGroupPath()));
+    connect(ui->iniPathBtn,SIGNAL(clicked()),this,SLOT(iniPath()));
     connect(ui->operaNotePathBtn,SIGNAL(clicked()),this,SLOT(operaNotePath()));
     connect(ui->bitmapPathBtn,SIGNAL(clicked()),this,SLOT(bitmapPath()));
     connect(ui->workNotePathBtn,SIGNAL(clicked()),this,SLOT(workNotePath()));
@@ -98,6 +103,7 @@ void HSysPathTab::initTab()
     connect(ui->graphPathBtn,SIGNAL(clicked()),this,SLOT(graphPath()));
     connect(ui->paiPathBtn,SIGNAL(clicked()),this,SLOT(paiPath()));
     connect(ui->filPathBtn,SIGNAL(clicked()),this,SLOT(filPath()));
+    connect(ui->pluginPathBtn,SIGNAL(clicked()),this,SLOT(pluginPath()));
 
 }
 
@@ -132,7 +138,7 @@ void HSysPathTab::writeData()
     SYSSET *symbolPathEdit = new SYSSET;
     if(symbolPathEdit)
     {
-        symbolPathEdit->id = SYS_PATH_SYMBOL_SET;
+        symbolPathEdit->id = SYS_PATH_ICON_SET;
         symbolPathEdit->var = QVariant(ui->symbolPathEdit->text());
         pSysSetList->append(symbolPathEdit);
     }
@@ -145,18 +151,18 @@ void HSysPathTab::writeData()
         pSysSetList->append(eventPathEdit);
     }
 
-    SYSSET *objGroupPathEdit = new SYSSET;
-    if(objGroupPathEdit)
+    SYSSET *iniPathEdit = new SYSSET;
+    if(iniPathEdit)
     {
-        objGroupPathEdit->id = SYS_PATH_MACRO_SET;
-        objGroupPathEdit->var = QVariant(ui->objGroupPathEdit->text());
-        pSysSetList->append(objGroupPathEdit);
+        iniPathEdit->id = SYS_PATH_INI_SET;
+        iniPathEdit->var = QVariant(ui->iniPathEdit->text());
+        pSysSetList->append(iniPathEdit);
     }
 
     SYSSET *operaNotePathEdit = new SYSSET;
     if(operaNotePathEdit)
     {
-        operaNotePathEdit->id = SYS_PATH_OPNOTE_SET;
+        operaNotePathEdit->id = SYS_PATH_OPSHEET_SET;
         operaNotePathEdit->var = QVariant(ui->operaNotePathEdit->text());
         pSysSetList->append(operaNotePathEdit);
     }
@@ -208,6 +214,14 @@ void HSysPathTab::writeData()
         filPathEdit->var = QVariant(ui->filPathEdit->text());
         pSysSetList->append(filPathEdit);
     }
+
+    SYSSET *pluginPathEdit = new SYSSET;
+    if(pluginPathEdit)
+    {
+        pluginPathEdit->id = SYS_PATH_PLUGIN_SET;
+        pluginPathEdit->var = QVariant(ui->pluginPathEdit->text());
+        pSysSetList->append(pluginPathEdit);
+    }
 }
 
 void HSysPathTab::readData()
@@ -234,19 +248,19 @@ void HSysPathTab::readData()
             {
                 ui->dataBasePathEdit->setText(sysSet->var.toString());
             }
-            else if(sysSet->id == SYS_PATH_SYMBOL_SET)
+            else if(sysSet->id == SYS_PATH_ICON_SET)
             {
                 ui->symbolPathEdit->setText(sysSet->var.toString());
             }
-            else if(sysSet->id == SYS_PATH_MACRO_SET)
+            else if(sysSet->id == SYS_PATH_INI_SET)
             {
-                ui->objGroupPathEdit->setText(sysSet->var.toString());
+                ui->iniPathEdit->setText(sysSet->var.toString());
             }
             else if(sysSet->id == SYS_PATH_EVENT_SET)
             {
                 ui->eventPathEdit->setText(sysSet->var.toString());
             }
-            else if(sysSet->id == SYS_PATH_OPNOTE_SET)
+            else if(sysSet->id == SYS_PATH_OPSHEET_SET)
             {
                 ui->operaNotePathEdit->setText(sysSet->var.toString());
             }
@@ -273,6 +287,10 @@ void HSysPathTab::readData()
             else if(sysSet->id == SYS_PATH_FIL_SET)
             {
                 ui->filPathEdit->setText(sysSet->var.toString());
+            }
+            else if(sysSet->id == SYS_PATH_PLUGIN_SET)
+            {
+                ui->pluginPathEdit->setText(sysSet->var.toString());
             }
         }
     }
@@ -307,10 +325,10 @@ void HSysPathTab::pathUniteCheck()
         ui->eventPathEdit->setReadOnly(true);
         ui->eventPathBtn->setEnabled(false);
 
-        ui->objGroupPathEdit->setText(strPath);
-        ui->objGroupPathEdit->setCursorPosition(0);
-        ui->objGroupPathEdit->setReadOnly(true);
-        ui->objGroupPathBtn->setEnabled(false);
+        ui->iniPathEdit->setText(strPath);
+        ui->iniPathEdit->setCursorPosition(0);
+        ui->iniPathEdit->setReadOnly(true);
+        ui->iniPathBtn->setEnabled(false);
 
         ui->operaNotePathEdit->setText(strPath);
         ui->operaNotePathEdit->setCursorPosition(0);
@@ -346,6 +364,11 @@ void HSysPathTab::pathUniteCheck()
         ui->filPathEdit->setCursorPosition(0);
         ui->filPathEdit->setReadOnly(true);
         ui->filPathBtn->setEnabled(false);
+
+        ui->pluginPathEdit->setText(strPath);
+        ui->pluginPathEdit->setCursorPosition(0);
+        ui->pluginPathEdit->setReadOnly(true);
+        ui->pluginPathBtn->setEnabled(false);
     }
     else
     {
@@ -363,8 +386,8 @@ void HSysPathTab::pathUniteCheck()
         ui->eventPathBtn->setEnabled(true);
 
         //ui->objGroupPathEdit->setText(strPath);
-        ui->objGroupPathEdit->setReadOnly(false);
-        ui->objGroupPathBtn->setEnabled(true);
+        ui->iniPathEdit->setReadOnly(false);
+        ui->iniPathBtn->setEnabled(true);
 
         //ui->operaNotePathEdit->setText(strPath);
         ui->operaNotePathEdit->setReadOnly(false);
@@ -393,6 +416,9 @@ void HSysPathTab::pathUniteCheck()
         //ui->filPathEdit->setText(strPath);
         ui->filPathEdit->setReadOnly(false);
         ui->filPathBtn->setEnabled(true);
+
+        ui->pluginPathEdit->setReadOnly(false);
+        ui->pluginPathBtn->setEnabled(true);
     }
 }
 
@@ -409,7 +435,7 @@ void HSysPathTab::pathUnite()
 
     //统一设置其他路径
     QString subDir;
-    subDir = dir + "//Data"; //....遗留问题
+    subDir = dir + "//Data"; //....遗留问题---huangw
 }
 
 void HSysPathTab::dataBasePath()
@@ -448,16 +474,16 @@ void HSysPathTab::eventPath()
     ui->eventPathEdit->setCursorPosition(0);
 }
 
-void HSysPathTab::objGroupPath()
+void HSysPathTab::iniPath()
 {
     QString strPath;
-    strPath = ui->objGroupPathEdit->text();
+    strPath = ui->iniPathEdit->text();
     if(strPath.isEmpty())
         strPath = QDir::currentPath();
     QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if(dir.isEmpty()) return;
-    ui->objGroupPathEdit->setText(dir);
-    ui->objGroupPathEdit->setCursorPosition(0);
+    ui->iniPathEdit->setText(dir);
+    ui->iniPathEdit->setCursorPosition(0);
 }
 
 void HSysPathTab::operaNotePath()
@@ -542,4 +568,16 @@ void HSysPathTab::filPath()
     if(dir.isEmpty()) return;
     ui->filPathEdit->setText(dir);
     ui->filPathEdit->setCursorPosition(0);
+}
+
+void HSysPathTab::pluginPath()
+{
+    QString strPath;
+    strPath = ui->pluginPathEdit->text();
+    if(strPath.isEmpty())
+        strPath = QDir::currentPath();
+    QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if(dir.isEmpty()) return;
+    ui->pluginPathEdit->setText(dir);
+    ui->pluginPathEdit->setCursorPosition(0);
 }

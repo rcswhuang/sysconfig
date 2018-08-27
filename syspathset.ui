@@ -139,11 +139,11 @@
      <string>图符库路径</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="objGroupPathBtn">
+   <widget class="QPushButton" name="iniPathBtn">
     <property name="geometry">
      <rect>
-      <x>468</x>
-      <y>99</y>
+      <x>212</x>
+      <y>250</y>
       <width>31</width>
       <height>23</height>
      </rect>
@@ -165,11 +165,11 @@
      <string>...</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="objGroupPathEdit">
+   <widget class="QLineEdit" name="iniPathEdit">
     <property name="geometry">
      <rect>
-      <x>274</x>
-      <y>101</y>
+      <x>18</x>
+      <y>252</y>
       <width>191</width>
       <height>20</height>
      </rect>
@@ -178,14 +178,14 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>275</x>
-      <y>77</y>
+      <x>19</x>
+      <y>228</y>
       <width>111</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>图元组合库路径</string>
+     <string>配置文件库</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="eventPathEdit">
@@ -384,8 +384,8 @@
    <widget class="QPushButton" name="graphPathBtn">
     <property name="geometry">
      <rect>
-      <x>213</x>
-      <y>249</y>
+      <x>470</x>
+      <y>100</y>
       <width>31</width>
       <height>23</height>
      </rect>
@@ -430,8 +430,8 @@
    <widget class="QLineEdit" name="graphPathEdit">
     <property name="geometry">
      <rect>
-      <x>18</x>
-      <y>250</y>
+      <x>275</x>
+      <y>101</y>
       <width>191</width>
       <height>20</height>
      </rect>
@@ -440,8 +440,8 @@
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
-      <x>17</x>
-      <y>226</y>
+      <x>274</x>
+      <y>77</y>
       <width>81</width>
       <height>20</height>
      </rect>
@@ -461,6 +461,45 @@
     </property>
     <property name="text">
      <string>Fil文件路径</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pluginPathBtn">
+    <property name="geometry">
+     <rect>
+      <x>465</x>
+      <y>302</y>
+      <width>31</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="pluginPathEdit">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>304</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>280</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>插件文件路径</string>
     </property>
    </widget>
   </widget>
