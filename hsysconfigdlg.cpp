@@ -28,7 +28,6 @@ HSysConfigDlg::HSysConfigDlg(QWidget *parent) :
 HSysConfigDlg::~HSysConfigDlg()
 {
     delete ui;
-    exitSysConfig();
 }
 
 void HSysConfigDlg::initTab()
