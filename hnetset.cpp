@@ -1,4 +1,4 @@
-#include "hnetset.h"
+﻿#include "hnetset.h"
 #include "ui_netset.h"
 #include <QRegExp>
 HNetSetTab::HNetSetTab(QWidget *parent) :

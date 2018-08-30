@@ -1,4 +1,4 @@
-#include "hotherset.h"
+﻿#include "hotherset.h"
 #include "ui_otherset.h"
 
 HOtherSetTab::HOtherSetTab(QWidget *parent) :

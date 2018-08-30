@@ -1,4 +1,4 @@
-#include "hfunset.h"
+﻿#include "hfunset.h"
 #include "ui_funset.h"
 
 HFunSetTab::HFunSetTab(QWidget *parent) :
