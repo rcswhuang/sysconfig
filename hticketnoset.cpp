@@ -1,4 +1,7 @@
-﻿#include "hticketnoset.h"
+﻿#if defined (_MSC_VER) && (_MSC_VER >=1600)
+#pragma execution_character_set("utf-8")
+#endif
+#include "hticketnoset.h"
 #include "ui_ticketnoset.h"
 
 HWorkNoteSetTab::HWorkNoteSetTab(QWidget *parent) :

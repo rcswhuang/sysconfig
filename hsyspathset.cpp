@@ -1,4 +1,7 @@
-﻿#include "hsyspathset.h"
+﻿#if defined (_MSC_VER) && (_MSC_VER >=1600)
+#pragma execution_character_set("utf-8")
+#endif
+#include "hsyspathset.h"
 #include "ui_syspathset.h"
 #include <QDir>
 #include <QFileDialog>
@@ -56,6 +59,7 @@ void HSysPathTab::writeData()
     clear();
 
     SYSSET *pathUniteCheck = new SYSSET;
+    QString strPath;
     if(pathUniteCheck)
     {
         pathUniteCheck->id = SYS_PATH_UNITE_CHECK;
@@ -69,7 +73,9 @@ void HSysPathTab::writeData()
     {
         pathUniteEdit->id = SYS_PATH_UNITE_SET;
         pathUniteCheck->strObjName = QStringLiteral("统一路径");
-        pathUniteEdit->var = QVariant(ui->pathUniteEdit->text());
+        strPath = ui->pathUniteEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        pathUniteEdit->var = QVariant(strPath);
         pSysSetList->append(pathUniteEdit);
     }
 
@@ -78,7 +84,9 @@ void HSysPathTab::writeData()
     {
         pluginPathEdit->id = SYS_PATH_PLUGIN_SET;
         pluginPathEdit->strObjName = QStringLiteral("插件库路径");
-        pluginPathEdit->var = QVariant(ui->pluginPathEdit->text());
+        strPath = ui->pluginPathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        pluginPathEdit->var = QVariant(strPath);
         pSysSetList->append(pluginPathEdit);
     }
 
@@ -87,7 +95,9 @@ void HSysPathTab::writeData()
     {
         dataBasePathEdit->id = SYS_PATH_DATA_SET;
         dataBasePathEdit->strObjName = QStringLiteral("数据库路径");
-        dataBasePathEdit->var = QVariant(ui->dataBasePathEdit->text());
+        strPath = ui->dataBasePathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        dataBasePathEdit->var = QVariant(strPath);
         pSysSetList->append(dataBasePathEdit);
     }
 
@@ -96,7 +106,9 @@ void HSysPathTab::writeData()
     {
         eventPathEdit->id = SYS_PATH_EVENT_SET;
         eventPathEdit->strObjName = QStringLiteral("事件库路径");
-        eventPathEdit->var = QVariant(ui->eventPathEdit->text());
+        strPath = ui->eventPathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        eventPathEdit->var = QVariant(strPath);
         pSysSetList->append(eventPathEdit);
     }
 
@@ -105,7 +117,9 @@ void HSysPathTab::writeData()
     {
         operaNotePathEdit->id = SYS_PATH_OPSHEET_SET;
         operaNotePathEdit->strObjName = QStringLiteral("操作票库路径");
-        operaNotePathEdit->var = QVariant(ui->operaNotePathEdit->text());
+        strPath = ui->operaNotePathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        operaNotePathEdit->var = QVariant(strPath);
         pSysSetList->append(operaNotePathEdit);
     }
 
@@ -114,7 +128,9 @@ void HSysPathTab::writeData()
     {
         workNotePathEdit->id = SYS_PATH_WORKNOTE_SET;
         workNotePathEdit->strObjName = QStringLiteral("工作票库路径");
-        workNotePathEdit->var = QVariant(ui->workNotePathEdit->text());
+        strPath = ui->workNotePathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        workNotePathEdit->var = QVariant(strPath);
         pSysSetList->append(workNotePathEdit);
     }
 
@@ -123,7 +139,9 @@ void HSysPathTab::writeData()
     {
         iconPathEdit->id = SYS_PATH_ICON_SET;
         iconPathEdit->strObjName = QStringLiteral("图符库路径");
-        iconPathEdit->var = QVariant(ui->iconPathEdit->text());
+        strPath = ui->iconPathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        iconPathEdit->var = QVariant(strPath);
         pSysSetList->append(iconPathEdit);
     }
 
@@ -132,7 +150,9 @@ void HSysPathTab::writeData()
     {
         mediaPathEdit->id = SYS_PATH_MEDIR_SET;
         mediaPathEdit->strObjName = QStringLiteral("媒体库路径");
-        mediaPathEdit->var = QVariant(ui->mediaPathEdit->text());
+        strPath = ui->mediaPathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        mediaPathEdit->var = QVariant(strPath);
         pSysSetList->append(mediaPathEdit);
     }
 
@@ -141,7 +161,9 @@ void HSysPathTab::writeData()
     {
         graphPathEdit->id = SYS_PATH_GRAPH_SET;
         graphPathEdit->strObjName = QStringLiteral("图形库路径");
-        graphPathEdit->var = QVariant(ui->graphPathEdit->text());
+        strPath = ui->graphPathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        graphPathEdit->var = QVariant(strPath);
         pSysSetList->append(graphPathEdit);
     }
 
@@ -150,7 +172,9 @@ void HSysPathTab::writeData()
     {
         paiPathEdit->id = SYS_PATH_SIGNPAD_SET;
         paiPathEdit->strObjName = QStringLiteral("接地牌库路径");
-        paiPathEdit->var = QVariant(ui->paiPathEdit->text());
+        strPath = ui->paiPathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        paiPathEdit->var = QVariant(strPath);
         pSysSetList->append(paiPathEdit);
     }
 
@@ -159,7 +183,9 @@ void HSysPathTab::writeData()
     {
         iniPathEdit->id = SYS_PATH_INI_SET;
         iniPathEdit->strObjName = QStringLiteral("配置库路径");
-        iniPathEdit->var = QVariant(ui->iniPathEdit->text());
+        strPath = ui->iniPathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        iniPathEdit->var = QVariant(strPath);
         pSysSetList->append(iniPathEdit);
     }
 }

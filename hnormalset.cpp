@@ -1,4 +1,7 @@
-﻿#include "hnormalset.h"
+﻿#if defined (_MSC_VER) && (_MSC_VER >=1600)
+#pragma execution_character_set("utf-8")
+#endif
+#include "hnormalset.h"
 #include "ui_normalset.h"
 #include <QFileDialog>
 #include <QDir>
