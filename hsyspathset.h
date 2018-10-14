@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "hconfigapi.h"
-#include "publicdata.h"
+#include "hfileapi.h"
 namespace Ui {
 class SysPath;
 }
