@@ -46,7 +46,7 @@ FORMS    += sysconfig.ui \
     ticketnoset.ui \
     syspathset.ui
 
-LIBS += -L../lib -lH5ConfigHelp
+LIBS += -L../lib -lH5ConfigHelp -llicensrv
 unix{
     UI_DIR = temp/ui
     MOC_DIR = temp/moc

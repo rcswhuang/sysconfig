@@ -11,7 +11,7 @@
 #include "hformatset.h"
 #include "hotherset.h"
 
-
+class QTimer;
 /*
 SETTING* findSettingById(ushort wSettingId)
 {
@@ -37,6 +37,7 @@ public slots:
     void ok_clicked();
     void cancle_clicked();
     void apply_clicked();
+    void license_check();
 private:
     Ui::SysConfig *ui;
 public:
@@ -48,6 +49,7 @@ public:
     HWorkNoteSetTab* pWorkNoteSetTab;
     HFormatSetTab* pFormatSetTab;
     HOtherSetTab* pOtherSetTab;
+    QTimer* m_timer;
     //HSysConfig* pSysConfig;
 };
 

@@ -7,8 +7,9 @@
 #include <QHBoxLayout>
 #include <QTabBar>
 #include <QMessageBox>
+#include <QTimer>
 #include "hconfigapi.h"
-
+#include "hlicenseapi.h"
 /*
  * 获取系统配置文件目录:../WFS-9800/wfconfig.xml
  * 1.获取系统变量 wfsystem_dir=../WFS-9800
@@ -19,10 +20,14 @@ HSysConfigDlg::HSysConfigDlg(QWidget *parent) :
     ui(new Ui::SysConfig)
 {
     ui->setupUi(this);
-
+    //setAttribute(Qt::WA_DeleteOnClose); //可能是main里面new才能用
+    setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
     initSysConfig();
-
     initTab();
+    //注册判断
+    m_timer = new QTimer(this);
+    connect(m_timer,&QTimer::timeout,this,&HSysConfigDlg::license_check);
+    m_timer->start(10000);
 }
 
 HSysConfigDlg::~HSysConfigDlg()
@@ -37,7 +42,7 @@ void HSysConfigDlg::initTab()
     connect(ui->okBtn,SIGNAL(clicked(bool)),this,SLOT(ok_clicked()));
     connect(ui->cancelBtn,SIGNAL(clicked(bool)),this,SLOT(cancle_clicked()));
     connect(ui->applyBtn,SIGNAL(clicked(bool)),this,SLOT(apply_clicked()));
-    pConfigTabWidget = new QTabWidget;
+    pConfigTabWidget = new QTabWidget(this);
     QString tabBarStyle = "QTabWidget::pane { border-top: 2px solid #C2C7CB;} \
                             QTabWidget::tab-bar { left: 5px; } \
             QTabBar::tab {background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, \
@@ -52,11 +57,11 @@ void HSysConfigDlg::initTab()
         } \
         QTabBar::tab:selected, QTabBar::tab:hover { \
             background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, \
-                                        stop: 0 #fafafa, stop: 0.4 #f4f4f4, \
-                                        stop: 0.5 #e7e7e7, stop: 1.0 #fafafa); \
+                                        stop: 0 LightSeaGreen, stop: 0.4 MediumTurquoise, \
+                                        stop: 0.5 MediumTurquoise, stop: 1.0 LightSeaGreen); \
         } \
         QTabBar::tab:selected { \
-            border-color: #9B9B9B;  \
+            border-color: LightSeaGreen;  \
             border-bottom-color: #C2C7CB; \
         } \
         QTabBar::tab:!selected {margin-top: 2px; }";
@@ -131,6 +136,18 @@ void HSysConfigDlg::apply_clicked()
     apply();
 }
 
+void HSysConfigDlg::license_check()
+{
+    if(ACTIVE_FAIL == validActivateCode())
+    {
+        startActivate(ACTIVE_FAIL);
+        QDialog::reject();
+    }
+    else
+    {
+        m_timer->stop();
+    }
+}
 
 
 
