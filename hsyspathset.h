@@ -41,6 +41,8 @@ private slots:
     void graphPath();
     void paiPath();
     void iniPath();
+
+    void reportPath();
 };
 
 #endif // HSYSPATHTAB_H

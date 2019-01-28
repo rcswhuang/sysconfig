@@ -52,6 +52,7 @@ void HSysPathTab::initTab()
     connect(ui->mediaPathBtn,SIGNAL(clicked()),this,SLOT(mediaPath()));
     connect(ui->graphPathBtn,SIGNAL(clicked()),this,SLOT(graphPath()));
     connect(ui->paiPathBtn,SIGNAL(clicked()),this,SLOT(paiPath()));
+    connect(ui->reportPathBtn,SIGNAL(clicked()),this,SLOT(reportPath()));
 }
 
 void HSysPathTab::writeData()
@@ -188,6 +189,17 @@ void HSysPathTab::writeData()
         iniPathEdit->var = QVariant(strPath);
         pSysSetList->append(iniPathEdit);
     }
+
+    SYSSET *reportPathEdit = new SYSSET;
+    if(reportPathEdit)
+    {
+        reportPathEdit->id = SYS_PATH_REPORT_SET;
+        reportPathEdit->strObjName = QStringLiteral("报表库路径");
+        strPath = ui->reportPathEdit->text();
+        strPath.replace("\\","/",Qt::CaseSensitive);
+        reportPathEdit->var = QVariant(strPath);
+        pSysSetList->append(reportPathEdit);
+    }
 }
 
 void HSysPathTab::readData()
@@ -249,6 +261,10 @@ void HSysPathTab::readData()
             else if(sysSet->id == SYS_PATH_INI_SET)
             {
                 ui->iniPathEdit->setText(sysSet->var.toString());
+            }
+            else if(sysSet->id == SYS_PATH_REPORT_SET)
+            {
+                ui->reportPathEdit->setText(sysSet->var.toString());
             }
         }
     }
@@ -341,6 +357,13 @@ void HSysPathTab::pathUniteCheck()
         ui->iniPathEdit->setCursorPosition(0);
         ui->iniPathEdit->setReadOnly(true);
         ui->iniPathBtn->setEnabled(false);
+
+        strSubPath = PATH_REPORT;
+        strPath =  strPath1 + strSubPath + "/";
+        ui->reportPathEdit->setText(strPath);
+        ui->reportPathEdit->setCursorPosition(0);
+        ui->reportPathEdit->setReadOnly(true);
+        ui->reportPathBtn->setEnabled(false);
     }
     else
     {
@@ -373,6 +396,9 @@ void HSysPathTab::pathUniteCheck()
 
         ui->iniPathEdit->setReadOnly(false);
         ui->iniPathBtn->setEnabled(true);
+
+        ui->reportPathEdit->setReadOnly(false);
+        ui->reportPathBtn->setEnabled(true);
     }
 }
 
@@ -510,4 +536,16 @@ void HSysPathTab::iniPath()
     if(dir.isEmpty()) return;
     ui->iniPathEdit->setText(dir);
     ui->iniPathEdit->setCursorPosition(0);
+}
+
+void HSysPathTab::reportPath()
+{
+    QString strPath;
+    strPath = ui->reportPathEdit->text();
+    if(strPath.isEmpty())
+        strPath = QDir::currentPath();
+    QString dir = QFileDialog::getExistingDirectory(this, ("浏览目录"),strPath,QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if(dir.isEmpty()) return;
+    ui->reportPathEdit->setText(dir);
+    ui->reportPathEdit->setCursorPosition(0);
 }
